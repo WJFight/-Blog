@@ -1,0 +1,223 @@
+<div style="padding: 15px;">
+    <table id="blog_table" lay-filter="blog_table"></table>
+</div>
+
+<!-- 博客管理工具条渲染模版-->
+<script id="blog_table_bar" type="text/html">
+    <a class="layui-btn layui-btn-xs" lay-event="start">启用</a>
+    <a class="layui-btn layui-btn-xs" lay-event="end">禁用</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">改密码</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script id="parseTime" type="text/html">
+</script>
+
+<script type="text/javascript">
+</script>
+
+<style>
+    div.layui-layer-content {
+        overflow: visible !important;
+    }
+
+</style>
+
+<script id="user_image" type="text/html">
+    <img src="{{d.user_image}}" class="layui-nav-img">
+</script>
+<!-- 引入分类选择渲染js -->
+<!--<script type="text/javascript" src="/js/type_select.js"></script>-->
+
+<script>
+    var blogData;
+    //文章管理表格
+    layui.table.render({
+        elem: '#blog_table',
+        width: 1200,
+        url: '/admin/selectBlogUsers',  //数据接口
+        done: function (res, curr, count) {
+            blogData = JSON.stringify(res);
+        },
+        page: true, //开启分页
+        request: {
+            pageName: 'curr' //页码的参数名称，默认：page
+            , limitName: 'limit' //每页数据量的参数名，默认：limit
+        },
+        cols: [[    //表头
+            {field: 'user_image', title: '评论者头像', width: 100, templet: '#user_image'},
+            {field: 'user_id', title: 'id', width: 50},
+            {field: 'user_realname', title: '账号', width: 150, sort: true},
+            {field: 'username', title: '昵称', width: 150},
+            {field: 'user_phone', title: '电话', width: 150, sort: true},
+            {field: 'isenable', title: '用户状态', width: 150, templet:function (d) {
+                    if (d.isenable == 0)
+                        return '禁止状态';
+                    else {
+                        return '正常使用';
+                    }
+                }},
+            {
+                field: 'user_sex', title: '性别', width: 150, templet: function (d) {
+                    if (d.user_sex == 0)
+                        return '男';
+                    else {
+                        return '女';
+                    }
+
+                }
+            },
+            {title: '操作', align: 'center', width: 300, toolbar: '#blog_table_bar'}
+        ]]
+    });
+
+
+    //文章表格工具条事件监听
+    layui.table.on('tool(blog_table)', function (obj) { //tool是工具条事件名，参数是table原始容器的lay-filter属性值
+        var layEvent = obj.event; //获得 lay-event 对应的值
+        if (layEvent === 'del') { //删除
+            layer.confirm('确定要删除该用户吗？', function (index) {
+                layer.close(index);
+                layer.load(1);
+
+                //向服务器发送删除文章请求
+                layui.jquery.ajax({
+                    url: "/admin/deleteBlogUserByusername",
+                    data:{"username":obj.data.username},
+                    type: "DELETE",
+                    success: function (result) {
+                        if (result.code=='0'){
+                            layer.closeAll('loading');//关闭loading图标
+                            layer.msg("删除成功", {icon: 1});
+                            obj.del(); //删除表格对应行并更新缓存
+                        }else{
+                            layer.msg(result.msg);
+                        }
+
+                    },
+                    error: function (result) {
+                        layer.closeAll('loading');
+                        layer.msg(result.responseText, {icon: 2});
+                    }
+                })
+            });
+        } else if (layEvent == 'end') {
+            layer.confirm('确定要该禁用该用户吗？', function (index) {
+                layer.close(index);
+                layer.load(1);
+                //向服务器发送删除文章请求
+                layui.jquery.ajax({
+                    url: "/admin/updateBlogUserRole",
+                    data:{"user_id":obj.data.user_id,"isenable":"end"},
+                    type: "PUT",
+                    success: function (result) {
+                        if (result.code=='0'){
+                            layer.closeAll('loading');//关闭loading图标
+                            layer.msg("修改成功", {icon: 1});
+                            load("admin_user"); //删除表格对应行并更新缓存
+                        }else{
+                            layer.msg(result.msg);
+                        }
+
+                    },
+                    error: function (result) {
+                        layer.closeAll('loading');
+                        layer.msg(result.responseText, {icon: 2});
+                    }
+                })
+            });
+        } else if(layEvent == 'start'){
+            // "isenable":"start"
+            // layer.close(index);
+            // layer.load(1);
+            //向服务器发送删除文章请求
+            layui.jquery.ajax({
+                url: "/admin/updateBlogUserRole",
+                data:{"user_id":obj.data.user_id,"isenable":"start"},
+                type: "PUT",
+                success: function (result) {
+                    if (result.code=='0'){
+                        layer.closeAll('loading');//关闭loading图标
+                        layer.msg("修改成功", {icon: 1});
+                        load("admin_user"); //删除表格对应行并更新缓存
+                    }else{
+                        layer.msg(result.msg);
+                    }
+
+                },
+                error: function (result) {
+                    layer.closeAll('loading');
+                    layer.msg(result.responseText, {icon: 2});
+                }
+            })
+        }
+        else if (layEvent == 'edit') {
+            // alert("来到这里"+data.blogUser.post_content);
+            // load("editoPost");
+
+            //保存要编辑的博客信息后跳转到写博客页面
+            //    alert(obj.data.post_content);
+           window.editBlogUser = {
+               user_id: obj.data.user_id,
+               username: obj.data.username,
+            };
+            load("admin_updatePassword");
+        }
+    });
+
+
+    var categoryId;
+    var typeId;
+    var typeData;
+
+    //选项渲染
+    function appendOption($o, text, value) {
+//新建一个option
+        var $opt = layui.jquery("<option>").text(text).val(value);
+        $opt.appendTo($o);
+    }
+
+    layui.use(['jquery', 'form'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            $form = $('#typeForm');
+
+        //绑定选择事件
+        form.on('select(category)', function (data) {
+            categoryEvent(data);
+        });
+        form.on('select(type)', function (data) {
+            typeEvent(data);
+        });
+
+        //监听一级分类选择事件
+        function categoryEvent(data) {
+            //二级分类和typeID置空并添加提示选项
+            $('#type').html("");
+            typeId = null;
+            appendOption($('#type'), "二级分类", "");
+
+            //当选择的不是提示选项时则遍历一级分类
+            if (data.value != "") {
+                $.each(typeData, function (index, category) {
+                    //如果是当前选择的一级分类且子分类非空则遍历二级分类
+                    if (category.text == data.value && category.children) {
+                        //修改全局变量categoryID
+                        categoryId = category.id;
+                        $.each(category.children, function (index, type) {
+                            appendOption($('#type'), type.text, type.text);
+                        });
+                    }
+                });
+                //否则置空categoryId
+            } else {
+                categoryId = null;
+            }
+            //渲染表格
+            form.render();
+        }
+
+
+    });
+
+</script>

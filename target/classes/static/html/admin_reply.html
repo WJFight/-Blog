@@ -1,0 +1,79 @@
+<div style="padding: 15px;">
+    <table id="reply_table" lay-filter="reply_table"></table>
+</div>
+<!-- 评论管理工具条渲染模版-->
+<script id="comment_table_bar" type="text/html">
+    <!-- 跳转到评论所在文章以及页面位置-->
+<!--    <a class="layui-btn layui-btn-xs" lay-event="view" href="" target="_blank?comment_id=">查看</a>-->
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script id="fr_image" type="text/html">
+    <img src="{{d.fr_image}}" class="layui-nav-img">
+</script>
+
+<script type="text/javascript">
+
+</script>
+
+<script>
+    var commentData;
+    //评论表格
+    layui.table.render({
+        elem: '#reply_table',
+        width: 1200,
+        url: '/admin/selectAllReply',  //数据接口
+        done: function (res, curr, count) {
+            //  alert(JSON.stringify(res));
+            //alert(JSON.stringify(count));
+            commentData = JSON.stringify(res);
+        },
+        page: true, //开启分页
+        request: {
+            pageName: 'curr' //页码的参数名称，默认：page
+            , limitName: 'limit' //每页数据量的参数名，默认：limit
+        },
+        cols: [[    //表头
+            {field: 'fr_image', title: '评论者头像', width: 120, templet: '#fr_image'},
+            {field: 'fr_name', title: '评论者', width: 80, sort: true},
+            {field: 'comment_id', title: '评论id', width: 80, sort: true},
+            {field: 'reply_content', title: '评论内容', width: 260, sort: true},
+            {field: 'to_name', title: '被评论', width: 120},
+            {field: 'reply_id', title: '回复id', width: 80},
+            {field: 'reply_date', title: '发表时间', width: 120, sort: true, templet: '#parseTime'},
+            {title: '操作', align: 'center', width: 120, toolbar: '#comment_table_bar'}
+        ]]
+    });
+
+
+    // 评论管理表格工具条事件监听
+    layui.table.on('tool(reply_table)', function (obj) { //tool是工具条事件名，参数是table原始容器的lay-filter属性值
+        var layEvent = obj.event; //获得 lay-event 对应的值
+        if (layEvent == 'del') { //删除
+            layer.confirm('确定要删除该评论吗？', function (index) {
+                layer.close(index);
+                layer.load(1);
+                // alert("comment_id=" + obj.data.comment_id + ",from_id=" + obj.data.from_id + ",reply_id=" + obj.data.reply_id)
+                //向服务器发送删除评论请求
+                layui.jquery.ajax({
+                    url: "/admin/deleteReply",
+                    type: "DELETE",
+                    data: {
+                        "comment_id": obj.data.comment_id,
+                        "from_id": obj.data.from_id,
+                        "reply_id": obj.data.reply_id
+                    },
+                    success: function (result) {
+                        layer.closeAll('loading');//关闭loading图标
+                        layer.msg("删除成功", {icon: 1});
+                        obj.del(); //删除表格对应行并更新缓存
+                    },
+                    error: function (result) {
+                        layer.closeAll('loading');
+                        layer.msg(result.responseText, {icon: 2});
+                    }
+                })
+            });
+        }
+    });
+</script>

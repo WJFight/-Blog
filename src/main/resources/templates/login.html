@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+
+
+        html, body {
+            height: 100%;
+            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+            position: relative;
+            background-image: url("/images/bg_1.gif");
+            background-repeat: no-repeat;
+            background-size: cover;
+            box-sizing: border-box;
+        }
+
+        .wrapper {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            width: 500px;
+            height: 50%;
+        }
+
+        .head img {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            box-sizing: border-box;
+            height: 50px;
+        }
+
+        .main {
+            position: relative;
+            top: 60px;
+            height: 70%;
+            /*height: 240px;*/
+        }
+
+        a {
+            text-decoration: none !important;
+            color: white;
+            font-size: 12px;
+        }
+
+        .captcha > img {
+            box-sizing: border-box;
+            float: right;
+            width: 40%;
+            height: 38px;
+            cursor: pointer;
+        }
+
+        .layui-input {
+            padding-left: 35px !important;
+        }
+
+        .layui-icon {
+            font-size: 22px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+<div class=" container-fluid">
+    <!--    <div class="head">-->
+    <!--        &lt;!&ndash;        <img src="/images/login_ico.png" />&ndash;&gt;-->
+    <!--    </div>-->
+    <div class="wrapper row">
+        <div class="col-md-12">
+            <div class="main">
+                <!--<fieldset>-->
+                <form class="layui-form" name="loginForm" method="post">
+                    <div class="layui-form-item">
+                        <i class="layui-icon" style="color: black;position: absolute;top: 2px;left: 0px;">&#xe611;</i>
+                        <input class="layui-input" type="text" name="username" autocomplete="off" placeholder="用户名"
+                               lay-verify="require"/>
+                    </div>
+                    <div class="layui-form-item">
+                        <i class="layui-icon" style="position: absolute;left: 0px;margin-top: 2px;">&#xe6a8;</i> <input
+                            class="layui-input" type="password" name="password" autocomplete="off" placeholder="密码"
+                            lay-verify="require"/>
+                    </div>
+                    <div class="layui-form-item captcha">
+                        <img id="imagcode" src="/visit/imagcode" onclick="changeImg()"/>
+                        <p>点击图片刷新</p>
+                        <!--                    οnclick="this.src=''"-->
+                        <i class="layui-icon" style="position: absolute;left: 0px;margin-top: 2px;">&#xe6be;</i>
+                        <input class="layui-input" type="text" name="captcha" autocomplete="off" placeholder="请输入验证码"
+                               lay-verify="require"/><i th:text="${msg}"></i>
+                        <td colspan='2'><input name="remember-me" type="checkbox" value="true"/>记住我
+                    </div>
+                    <div class="layui-form-item">
+                        <!-- <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>                    <input class="layui-btn layui-btn-normal" type="submit" value="登录"> -->
+                        <button th:type="button" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="go">登录
+                        </button>
+                        <!--                        <button type="button" id="qqLoginBtn">-->
+                                <a href="/visit/qq" style="width: 76px;height: 24px;"> <img src="/images/qqlog.png"
+                                                                                            style="height:30px">
+                    </a>          
+                                         
+                        <!--                        </button>-->
+                        <p style="color: whitesmoke;position: absolute;top: 200px;right: 0px;"><a href="javascript:;"
+                                                                                                  onclick="" class="fr">忘记密码？</a><i
+                                class="layui-icon">&#xe62e;</i><a href="/visit/toRegiste" class="fl">没有账号？立即注册</a></p>
+                    </div>
+                </form>
+                <!--</fieldset>-->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"-->
+<!--        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"-->
+<!--        crossorigin="anonymous"></script>-->
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"-->
+<!--        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"-->
+<!--        crossorigin="anonymous"></script>-->
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/layui/layui.js}"/>
+<!--<script type="text/javascript" th:src="@{/layui/lay/modules/jquery.js}"/>-->
+<script type="text/javascript" src="/layui/layui.js"></script>
+<!--qq登录-->
+
+<script type="text/javascript" charset="utf-8"
+        src="http://connect.qq.com/qc_jssdk.js"
+        data-appid="101800956"
+        data-redirecturi="http://yunhaiguil.wang/visit/qq/login">
+</script>
+<script type="text/javascript">
+    // QC.Login({
+    //     btnId:"qqLoginBtn"	//插入按钮的节点id
+    // });
+    function toLogin() {
+
+    }
+</script>
+<script type="text/javascript"
+        src="//connect.qq.com/qc_jssdk.js" charset="utf-8" data-callback="true"></script>
+<script>
+    layui.use(['layer', 'form'], function () {
+        //加载所需模块
+        var layer = layui.layer,
+            form = layui.form,
+            $ = layui.jquery;
+
+        //表单验证
+        form.verify({
+            require: function (value, item) {
+                if (item.name == "username" && value == "") {
+                    return "请输入用户名";
+                } else if (item.name == "password" && value == "") {
+                    return "请输入密码";
+                }
+                // else if (item.name == "password" && value.length<3) {
+                //     return "密码太短";
+                // }
+                else if (item.name == "captcha" && value == "") {
+                    return "请输入验证码";
+                } else if (item.name == "captcha" && value.length < 4) {
+                    return "验证码输入有误！";
+                }
+            }
+        });
+
+        // ajax请求登录,登录成功则跳转到后台管理页面,否则刷新验证码
+        form.on('submit(go)', function (data) {
+            // alert(JSON.stringify(data.field))
+            $.ajax({
+                url: "/visit/loginBlogUser",
+                // contentType: false,
+                async: false,
+                dataType: 'json',
+                data: data.field,
+                type: "post",
+                success: function (result, response) {
+                    if (result.code == 0) {
+                        // alert("成功");
+                        $(location).attr("href", "/");
+
+                    } else {
+                        if (result.msg === "error") {
+                            layer.alert('系统错误', {icon: 2});
+                        } else if (result.msg === "wrong") {
+                            layer.alert('用户名或密码密码错误', {icon: 2});
+                        } else if (result.msg === "denied") {
+                            layer.alert('权限不足', {icon: 2});
+                        } else {
+                            layer.alert("验证码错误", {icon: 2});
+                        }
+                        //请求新的验证码
+                        $(".captcha img").attr("src", "/visit/imagcode");
+                    }
+                }
+            });
+            return false;
+        });
+    });
+
+    function changeImg() {
+        $("#imagcode").attr("src", "/visit/imagcode");
+    }
+</script>
+</body>
+</html>

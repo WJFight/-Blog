@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" type="text/css"/>
+    <link rel="stylesheet" href="../../static/editor.md-master/examples/css/style.css"/>
+    <link rel="stylesheet" href="../../static/editor.md-master/css/editormd.preview.css"/>
+    <!--    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />-->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        a {
+            text-decoration: none !important;
+            list-style: none;
+            list-style-type: none;
+
+        }
+
+        body {
+            background-color: #d7d4f0;
+        }
+
+        input,
+        textarea {
+
+            outline: none;
+            border: none;
+            display: block;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            font-family: "PT Sans", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+            font-size: 1rem;
+            color: #555f77;
+        }
+
+        input::-webkit-input-placeholder,
+        textarea::-webkit-input-placeholder {
+            color: #ced2db;
+        }
+
+        input::-moz-placeholder,
+        textarea::-moz-placeholder {
+            color: #ced2db;
+        }
+
+        input:-moz-placeholder,
+        textarea:-moz-placeholder {
+            color: #ced2db;
+        }
+
+        input:-ms-input-placeholder,
+        textarea:-ms-input-placeholder {
+            color: #ced2db;
+        }
+
+        p {
+            line-height: 1.3125rem;
+        }
+
+        .comments {
+            margin: 2.5rem auto 0;
+            max-width: 60.75rem;
+            padding: 0 1.25rem;
+        }
+
+        .comment-wrap {
+            margin-bottom: 1.25rem;
+            display: table;
+            width: 100%;
+            min-height: 5.3125rem;
+        }
+
+        .photo {
+            padding-top: 0.625rem;
+            display: table-cell;
+            width: 3.5rem;
+        }
+
+        .photo img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .photo .avatar {
+            height: 2.55rem;
+            width: 2.55rem;
+            border-radius: 50%;
+            background-size: contain;
+            border: 1px solid darkgray;
+        }
+
+        .comment-block {
+
+
+            background-color: #e9e0e3;
+            display: table-cell;
+            vertical-align: top;
+            border-radius: 0.1875rem;
+            padding: 1rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+        }
+
+        .comment-block textarea {
+            width: 100%;
+            max-width: 100%;
+            resize: none;
+        }
+
+        .comment {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 5px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+            background-color: #edecf0;
+            max-width: 100%;
+        }
+
+        .comment_span {
+            display: block;
+            width: 100%;
+            border-bottom: 1px dashed darkgrey;
+        }
+
+        .comment_span img {
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            border: 2px solid darkgrey;
+        }
+
+
+        .comment-text {
+            margin-bottom: 1.25rem;
+        }
+
+        .bottom-comment {
+            color: #a4a2a9;
+            font-size: 0.875rem;
+        }
+
+        .comment-date {
+            float: right;
+            color: #a4a2a9;
+        }
+
+        .comment-actions {
+            float: right;
+        }
+
+        .comment-actions li {
+            display: inline;
+        }
+
+        .comment-actions li.complain {
+            padding-right: 0.625rem;
+            border-right: 1px solid #e1e5eb;
+        }
+
+        .comment-actions li.reply {
+            padding-left: 0.625rem;
+        }
+
+
+        .rectangle-list a {
+            position: relative;
+            display: block;
+            padding: .4em .4em .4em .8em;
+            *padding: .4em;
+            margin: .5em 0 .5em 2.5em;
+            /*background: greenyellow;*/
+            color: white;
+            text-decoration: none;
+            transition: all .3s ease-out;
+        }
+
+        /*.rectangle-list a:hover{*/
+        /*    !*background: #eee;*!*/
+        /*}*/
+
+        .rectangle-list a:before {
+            content: counter(li);
+            counter-increment: li;
+            position: absolute;
+            left: -2.5em;
+            top: 50%;
+            margin-top: -1em;
+            background: #ff7420;
+            height: 2em;
+            width: 2em;
+            line-height: 2em;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .rectangle-list a:after {
+            position: absolute;
+            content: '';
+            border: .5em solid transparent;
+            left: -1em;
+            top: 50%;
+            margin-top: -.5em;
+            transition: all .3s ease-out;
+        }
+
+        .rectangle-list a:hover:after {
+            left: -.5em;
+            border-left-color: #fa8072;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .layui-tab-title {
+            list-style-type: decimal;
+        }
+
+        .head { /*margin-top: 10px;*/
+            color: white;
+            height: 60px;
+            background-size: cover;
+            background-color: rgba(0, 0, 0, 0.58);
+        }
+
+        .serach {
+            height: 35px;
+            width: 30px;
+            margin: 0 auto;
+        }
+
+        .navbar-expand-lg .navbar-nav li {
+            display: inline-block;
+            float: none;
+            text-align: center;
+        }
+
+        .lidiv {
+            background-color: black;
+        }
+
+        .dropdown-menu a {
+            color: white;
+        }
+
+        .ulstyle {
+            background-color: black;
+        }
+
+        .ulstyle li {
+            width: 150px;
+        }
+
+        .formserch {
+            color: white
+        }
+
+        #footer, #header {
+            background-color: #000000;
+        }
+
+        #header1 {
+            height: 250px;
+            width: 100vw;;
+            background-color: #e6e6e6;
+            background-image: url("/images/h6.jpeg");
+            background-size: cover;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+        body {
+            background-color: #eaf8ff;
+            background-size: cover;
+        }
+
+        a {
+            text-decoration: none !important;
+            color: darkgrey;
+        }
+
+        .r2, .r1 {
+            text-align: center;
+            background-color: white;
+            width: 100%;
+            height: 250px;
+            margin-top: 15px;
+        }
+
+        .r3 h4, .r2 h4, .r1 h4 {
+            color: orangered;
+            border-bottom: 1px solid gray;
+            background-color: yellowgreen;
+            height: 35px;
+        }
+
+        .r2 h4 {
+            color: #c89af0;
+            background-color: #21fff8;
+        }
+
+        .r3 a, .r2 a, .r1 a {
+            color: red;
+        }
+
+        .olli {
+            text-align: left;
+            /*font-size: 20px;*/
+            counter-reset: li; /* Initiate a counter */
+            list-style: none; /* Remove default numbering */
+            *list-style: decimal; /* Keep using default numbering for IE6/7 */
+            font: 15px 'trebuchet MS', 'lucida sans';
+            padding: 0;
+            margin-bottom: 4em;
+            text-shadow: 0 1px 0 yellowgreen;
+        }
+
+        .olli li {
+            /*list-style-type:decimal !important;*/
+            height: 35px;
+            margin-left: 20px;
+        }
+
+        .olli li i {
+            color: darkgrey;
+            float: right;
+            margin-right: 10px;
+        }
+
+        .olli span {
+            width: 60%;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            word-break: break-all;
+        "
+        }
+
+        .sp {
+            width: 55%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .post_title h4:hover, a:hover {
+            color: orange;
+            transition: all .3s ease-out;
+        }
+
+        /*.mid1:hover{background-color:; transition: all .3s ease-out;}*/
+        .mid4, .mid0, .mid1 {
+            background-color: white;
+            text-align: left;
+            margin-top: 15px;
+            width: 100%;
+            height: 260px;
+            position: relative;
+        }
+
+        .mid4 {
+            margin-top: 10px;
+            background-color: floralwhite;
+        }
+
+        #mid31 {
+            background-color: ghostwhite;
+        }
+
+        .midh {
+            width: 100%;
+            border-bottom: 3px solid orange;
+            margin-top: 15px;
+            background-color: #b5bbe9;
+            padding-left: 10px;
+            height: 40px;
+            padding-top: 5px;
+        }
+
+        #mid {
+            background-color: #ffffff;
+        }
+
+        .mid_post {
+            width: 95%;
+            margin-left: 10px;
+            font-size: 1rem;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 6;
+            overflow: hidden;
+        }
+
+        .post_title {
+            margin-top: 10px;
+            padding-top: 5px;
+            padding-left: 10px;
+            display: block;
+        }
+
+        .mid1 .post_title {
+            background-color: #d7d4f0;
+        }
+
+        .mid4 .post_title {
+            background-color: gold;
+        }
+
+        .mid0 .post_title {
+            background-color: #bed2e9;
+
+        }
+
+        .post_title h4 {
+            margin-left: 10px;
+            padding-bottom: 5px;
+            color: #01a252;
+            width: 50%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .comment-r {
+            margin-right: 20px;
+            padding-top: 3%;
+            margin-top: 0px;
+            float: right;
+            position: absolute;
+            top: 72%;
+            right: 3%;
+        }
+
+        .comment-r i {
+            color: darkgray;
+            font-size: 20px;
+        }
+
+        .badge {
+            color: white
+        }
+        .follow{
+            display: block;
+            width: 25%;
+            height: 30px;
+            margin: 0 auto;
+            margin-top: 8px;
+            background: rgba(233, 7, 7, 0);
+            border: 1px solid red;
+            border-radius: 5px;
+            color: red;
+            outline: none;
+        }
+        .follow:hover{
+            background: rgba(233, 7, 7, 0.2);
+        }
+        .true{
+            display: inline;
+        }
+        .false{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid" style="">
+    <div id="header" class="row">
+        <div class="col-md-12" id="header1">
+            <h2 style="color:floralwhite;text-align: center;margin-top: 30px;">云海归来</h2>
+<!--            <audio style="position: absolute;left: 0;top: 70%;" th:src="${session.blogInfom?.music}" autoplay="autoplay"-->
+<!--                   controls id="audio"></audio>-->
+        </div>
+        <div class="col-md-12">
+            <nav class="navbar navbar-expand-lg   navbar-dark">
+                <button class="navbar-toggler" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse"
+                        type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand ml-5" href="#">W_J_M</a>
+                <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+                    <ul class="navbar-nav ulstyle">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">网站首页<span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item dropdown ">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="javaLink">JAVA基础</a>
+                            <div aria-labelledby="javaLink" class="dropdown-menu lidiv ">
+                                <a id="ty0" class="dropdown-item" href="javascript:;" onclick="reqType(0)">JAVA基础</a>
+                                <a id="ty1" class="dropdown-item" href="javascript:;" onclick="reqType(1)">JavaWeb</a>
+                                <a id="ty2" class="dropdown-item" href="javascript:;" onclick="reqType(2)">Mybatis</a>
+                                <a id="ty3" class="dropdown-item" href="javascript:;" onclick="reqType(3)">Exception</a>
+                                <a id="ty4" class="dropdown-item" href="javascript:;" onclick="reqType(4)">JVM</a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                               id="serverLink">DataBase</a>
+                            <div aria-labelledby="serverLink" class="dropdown-menu lidiv">
+                                <a id="ty5" class="dropdown-item" href="javascript:;" onclick="reqType(5)">MySQL</a>
+                                <a id="ty6" class="dropdown-item" href="javascript:;" onclick="reqType(6)">Oracle</a>
+                                <a id="ty7" class="dropdown-item" href="javascript:;" onclick="reqType(7)">Redis</a>
+
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown ">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                               id="springLink">Spring系列</a>
+                            <div aria-labelledby="springLink" class="dropdown-menu lidiv">
+                                <a id="ty8" class="dropdown-item" href="javascript:;" onclick="reqType(8)">Spring</a>
+                                <a id="ty9" class="dropdown-item" href="javascript:;" onclick="reqType(9)">SpringMVC</a>
+                                <a id="ty10" class="dropdown-item" href="javascript:;"
+                                   onclick="reqType(10)">SpringBoot</a>
+                                <a id="ty11" class="dropdown-item" href="javascript:;"
+                                   onclick="reqType(11)">SpringCloud</a>
+                                <a id="ty12" class="dropdown-item" href="javascript:;" onclick="reqType(12)">SpringSecurity</a>
+                            </div>
+                        </li>
+
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                               id="webLink">其他系列</a>
+                            <div aria-labelledby="webLink" class="dropdown-menu lidiv">
+                                <a id="ty13" class="dropdown-item" href="javascript:;" onclick="reqType(13)">多线程|并发</a>
+                                <a id="ty14" class="dropdown-item" href="javascript:;" onclick="reqType(14)">网站搭建</a>
+                                <a id="ty15" class="dropdown-item" href="javascript:;" onclick="reqType(15)">前端系列</a>
+                                <a id="ty16" class="dropdown-item" href="javascript:;" onclick="reqType(16)">缓存|加密</a>
+                                <a id="ty17" class="dropdown-item" href="javascript:;" onclick="reqType(17)">分布式学习</a>
+                                <a id="ty18" class="dropdown-item" href="javascript:;" onclick="reqType(19)">生活分享</a>
+                                <a id="ty19" class="dropdown-item" href="javascript:;" onclick="reqType(18)">其他</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <form action="" class="form-inline " method="get">
+                        <input id="search" aria-label="Search" required="required" class="form-control mr-sm-1" name=""
+                               placeholder="Search"
+                               type="search">
+                        <button class="btn btn-outline-success my-2 my-sm-0 " type="button" onclick="reqSearch()">
+                            Search
+                        </button>
+                    </form>
+                    <div id="userindex">
+                        <div id="u_index" style="visibility:hidden;">
+                            <ul class="layui-nav layui-layout-right"
+                                style="margin-left: 20px;background-color: black;height:50px;">
+                                <li class="layui-nav-item">
+                                    <a href="javascript:;" id="username">
+                                        <img id="head" th:src="${bu?.user_image}" class="layui-nav-img">
+                                        <span id="username1" th:text="${bu?.user_realname}">666</span>
+                                    </a>
+                                    <dl class="layui-nav-child">
+                                        <dd><a href="#">修改密码</a></dd>
+                                        <dd><a href="/user/index">个人中心</a></dd>
+                                    </dl>
+                                </li>
+                                <li class="layui-nav-item"><a href="/user/signOut">注销</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <!--    <div class="container" >-->
+    <div class="row">
+        <div class="col-md-3 column" style="">
+            <div style="background-color: white;margin-top: 20px;">
+                <img id="head3" th:src="${blogpostUser?.user_image}" style="height: 80px; width: 80px;border: 1px solid red; " class="layui-nav-img">
+                <span  style="font-size: 15px;" th:text="${blogPost?.user_realname}"/>
+                <span id="realname" style="visibility: hidden;" th:text="${blogPost?.user_realname}"/>
+                <button class="follow" onclick="follow()">
+                    <span class="true">关注</span>
+                    <span class="false">已关注</span>
+                </button>
+                <input id="user_id" style="visibility: hidden;" th:value="${blogPost?.user_id}"/>
+                <input id="post_id" style="visibility: hidden;" th:value="${blogPost?.post_id}"/>
+            </div>
+            <div style="background-color: #ffffff;margin-top: 10px;">
+                <h4 style="background-color: #aba8ff;height: 30px;padding-left: 20px;padding-top: 10px;">分类专栏</h4>
+                <ol class="olli " style="background-color: whitesmoke;">
+                    <th:block th:each="category:${categorys}">
+                        <li style="border-bottom: 1px solid black;text-align: center;">
+                            <a href="javascript:;" th:onclick="'queryCategory('+${category?.category_id}+');'" ><span><th:block th:text="${category?.category_name}"/>(<th:block th:text="${category?.category_count}">0</th:block>)篇</span></a></li>
+                    </th:block>
+                </ol>
+            </div>
+        </div>
+        <div class="col-md-8" >
+            <div id="mid">
+            </div>
+            <div id="by" class="col-md-12 column"
+                 style="margin-bottom: 20px;border-bottom: 4px solid darkgray;background-color: white;">
+                <div class="row clearfix" style="margin-top: 20px;">
+                    <div class="col-md-12 column" style="margin-top: 20px; border-radius: 10%;">
+                        <h2 style="text-align: center"><span th:text="${blogPost.post_title}"></span></h2>
+                        <p id="article-time" align="right">
+                            <i th:text="${#calendars.format(blogPost.post_createDate,'yyyy-MM-dd HH:mm:ss')}"
+                               pattern="yyyy-MM-dd HH:mm:ss"
+                               type="date"/>
+                            <i class="layui-icon" style="font-size: 20px">&#xe69e;</i>阅读量<span
+                                th:text="${blogPost.post_browseNumber}"></span>
+                        </p>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <div class="content editormd-preview-theme" id="content">
+                                <textarea id="append-test" style="display:none;"
+                                          th:text="${blogPost.post_content}"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <div class="col-md-12 column">
+                        </div>
+                        <div class="col-md-12 column">
+                            <div class="submit_commit">
+                                <a href="javascript:;" onclick="addPraise()"><i id="icon-praise" class="layui-icon"
+                                                                                style="font-size: 20px;">&#xe6c6;</i></a>赞(<span
+                                    id="praise" th:text="${blogPost.post_praise}"></span>)
+                                <i class="layui-icon layui-icon-reply-fill"><i class="layui-icon">&#xe697;</i>评论(<span
+                                        id="common"
+                                        th:text="${0}"></span>)</i>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!--                    评论功能-->
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <div class="comments">
+                            <img style="  height: 2.55rem;width: 2.55rem;border-radius: 50%;background-size: contain;border: 1px solid darkgray; "
+                                 th:src="${bu?.user_image}" src="/images/h6.jpeg">
+                            <textarea name=""
+                                      style=" width: 100%;max-width: 100%;padding: 10px;background-color: #d7dcd7"
+                                      id="comment_text" cols="5"
+                                      rows="3" MaxLength="200" placeholder="Say somthing..."></textarea>
+                            <button id="submit-comment" onclick="addComment()">发表</button>
+                        </div>
+                    </div>
+                </div>
+                <div id=comment_list class="comment_list">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+<div th:include="index::copyright" style="margin-bottom: 0px;"></div>
+</div>
+
+
+</body>
+
+
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}" type="text/css"/>
+<!--<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="../../static/editor.md-master/examples/js/jquery.min.js"></script>
+<script src="../../static/editor.md-master/lib/marked.min.js"></script>
+<script src="../../static/editor.md-master/lib/prettify.min.js"></script>
+<script src="../../static/editor.md-master/lib/raphael.min.js"></script>
+<script src="../../static/editor.md-master/lib/underscore.min.js"></script>
+<script src="../../static/editor.md-master/lib/sequence-diagram.min.js"></script>
+<script src="../../static/editor.md-master/lib/flowchart.min.js"></script>
+<script src="../../static/editor.md-master/lib/jquery.flowchart.min.js"></script>
+<script src="../../static/editor.md-master/editormd.js"></script>
+<script th:src="@{/static/editor.md-master/lib/jquery.cookie.js}"></script>
+<script th:src="@{/layui/layui.all.js}" type="text/javascript"/>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    editormd.markdownToHTML("content");
+    var comment_num = 0;
+    var post_id = $("#post_id").val();
+    var user_id = $("#user_id").val();//文章的主人
+
+
+    var page = 1; //设置首页页码
+    var limit = 5;  //设置一页显示的条数
+    var total;    //总条数
+    //搜索
+    function reqSearch() {
+    }
+    function follow() {
+        
+    }
+    //个人分类
+   function queryCategory(category_id){
+       var category_id=category_id;
+       $.ajax({
+         url:"/visit/selectPostByCategory_idAndUser_id",
+         data:{"user_id":user_id,"category_id":category_id},
+         type:"GET",
+           dataType: 'JSON',
+           success: function (res) {
+                if (res.code=='0'){
+                    var blogPosts = res.data;
+                    // alert(JSON.stringify(blogPosts));
+                    var len = blogPosts.length;
+                    if (len > 0) {
+                        var tg =  "该分类文章如下:";
+                        var s = " <div class=\"midh\" >" + tg + "</div>";
+                        $("#mid").append(s);
+                    }
+                    for (var i = 0; i < len; i++) {
+                        //  alert(blogPosts[i].post_title);
+                        var str = " <div class=\"mid0\">\n" +
+                            " <a href=\"/visit/selectPost/" + blogPosts[i].post_id + "\" class=\"post_title\">\n" +
+                            "            <h4>" + blogPosts[i].post_title + " </h4>\n" +
+                            "        </a>\n" +
+                            "        <div class=\"mid_post\">" + blogPosts[i].post_content + "</div>\n" +
+                            "  <div class=\"comment-r\">\n" +
+                            "\n" +
+                            "                            <i class=\"layui-icon\">&#xe6a4;</i> <a href=\"javascript:;\"><span\n" +
+                            "                               >" + blogPosts[i].user_realname + "</span></a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe696;</i><a style=\"color: darkgray\"><span\n" +
+                            "                                >" + blogPosts[i].post_createDate + "</span></a>\n" +
+                            "\n" +
+                            "                            <i id=\"icon-praise" + blogPosts[i].post_id + "\" class=\"layui-icon layui-icon-praise\"></i><a href=\"javascript:;\" onclick='addPraise(" + blogPosts[i].post_id + ")'>点赞(<span\n" +
+                            "                                id=\"praise" + blogPosts[i].post_id + "\" >" + blogPosts[i].post_praise + "</span>)</a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe697;</i><a href=\"/visit/selectPost/" + blogPosts[i].post_id + "\"  >评论(<span>" + blogPosts[i].comment_number + "</span>)</a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe69e;</i><a style=\"color: darkgray\">浏览(<span\n" +
+                            "                               >" + blogPosts[i].post_browseNumber + "</span>)</a>\n" +
+                            "                        </div>" +
+                            "    </div>";
+                        $("#mid").append(str);
+                     $("#by").remove();
+                    }
+                }
+           },
+           error: function (res) {
+
+           }
+       })
+   }
+    //标签分类
+    function reqTag(tag_id) {
+        $(".mid0").remove();
+        $(".midh").remove();
+        //    alert($("#" + tag_id));
+        var tag_name = $("#" + tag_id).text();
+        //   alert(tag_name);
+        $.ajax({
+            url: "/visit/selectPostByTag_id/" + tag_id,
+            type: "GET",
+            dataType: 'JSON',
+            success: function (res) {
+                if (res.code == 0) {
+                    var blogPosts = res.blogPosts;
+                    //  alert(JSON.stringify(blogPosts));
+                    var len = blogPosts.length;
+                    if (len > 0) {
+                        var tg = tag_name + "标签检索文章如下:";
+                        var s = " <div class=\"midh\" >" + tg + "</div>";
+                        $("#mid").append(s);
+                    }
+                    for (var i = 0; i < len; i++) {
+                        //  alert(blogPosts[i].post_title);
+                        var str = " <div class=\"mid0\">\n" +
+                            "        <a href=\"/visit/selectPost/\"" + blogPosts[i].post_id + "\+ class=\"post_title\" >\n" +
+                            "            <h4>" + blogPosts[i].post_title + " </h4>\n" +
+                            "        </a>\n" +
+                            "        <div class=\"mid_post\">" + blogPosts[i].post_content + "</div>\n" +
+                            "  <div class=\"comment-r\">\n" +
+                            "\n" +
+                            "                            <i class=\"layui-icon\">&#xe6a4;</i> <a href=\"javascript:;\"><span\n" +
+                            "                               >" + blogPosts[i].user_realname + "</span></a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe696;</i><a style=\"color: darkgray\"><span\n" +
+                            "                                >" + blogPosts[i].post_createDate + "</span></a>\n" +
+                            "\n" +
+                            "                            <i id=\"icon-praise" + blogPosts[i].post_id + "\" class=\"layui-icon layui-icon-praise\"></i><a href=\"javascript:;\" onclick='addPraise(" + blogPosts[i].post_id + ")'>点赞(<span\n" +
+                            "                                id=\"praise" + blogPosts[i].post_id + "\" >" + blogPosts[i].post_praise + "</span>)</a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe697;</i><a href=\"/visit/selectPost/" + blogPosts[i].post_id + "\"  >评论(<span>" + blogPosts[i].comment_number + "</span>)</a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe69e;</i><a style=\"color: darkgray\">浏览(<span\n" +
+                            "                               >" + blogPosts[i].post_browseNumber + "</span>)</a>\n" +
+                            "                        </div>" +
+                            "    </div>";
+                        $("#mid").append(str);
+                        // alert("加载完毕！")
+                        $("#by").remove();
+                    }
+                } else {
+                    var tg = tag_name + "标签检索文章如下:";
+                    var s = " <div class=\"midh\" >" + tg + "</div>";
+                    var msg = " <div class=\"mid0\" >" + res.msg + "</div>";
+                    $("#mid").append(s);
+                    $("#mid").append(msg);
+                    // alert(res.msg);
+
+                }
+            },
+            error: function (res) {
+
+            }
+        })
+    }
+
+    //加载分类数据
+    function reqType(type_id) {
+        $(".mid0").remove();
+        $(".midh").remove();
+        var typeName = $("#ty" + type_id).text();
+        //    alert(typeName);
+        $.ajax({
+            url: '/visit/selectPostByType_id/' + type_id,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.code == 0) {
+                    var blogPosts = data.blogPosts;
+                    //  alert(JSON.stringify(blogPosts));
+                    var len = blogPosts.length;
+                    if (len > 0) {
+                        var tg = typeName + "的类型文章如下:";
+                        var s = " <div class=\"midh\" style=\"width: 100%;border-bottom: 3px solid orange;margin-top: 15px;\">" + tg + "</div>";
+                        $("#mid").append(s);
+                    }
+                    for (var i = 0; i < len; i++) {
+                        //   alert(blogPosts[i].post_title);
+                        var str = " <div class=\"mid0\">\n" +
+                            " <a href=\"/visit/selectPost/"+blogPosts[i].post_id+"\" class=\"post_title\">\n" +
+                            "            <h4>" + blogPosts[i].post_title + " </h4>\n" +
+                            "        </a>\n" +
+                            "        <div class=\"mid_post\">" + blogPosts[i].post_content + "</div>\n" +
+                            "  <div class=\"comment-r\">\n" +
+                            "\n" +
+                            "                            <i class=\"layui-icon\">&#xe6a4;</i> <a href=\"javascript:;\"><span\n" +
+                            "                               >" + blogPosts[i].user_realname + "</span></a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe696;</i><a style=\"color: darkgray\"><span\n" +
+                            "                                >" + blogPosts[i].post_createDate + "</span></a>\n" +
+                            "\n" +
+                            "                            <i id=\"icon-praise" + blogPosts[i].post_id + "\" class=\"layui-icon layui-icon-praise\"></i><a href=\"javascript:;\" onclick='addPraise(" + blogPosts[i].post_id + ")'>点赞(<span\n" +
+                            "                                id=\"praise" + blogPosts[i].post_id + "\" >" + blogPosts[i].post_praise + "</span>)</a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe697;</i><a href=\"/visit/selectPost/" + blogPosts[i].post_id + "\"  >评论(<span>" + blogPosts[i].comment_number + "</span>)</a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe69e;</i><a style=\"color: darkgray\">浏览(<span\n" +
+                            "                               >" + blogPosts[i].post_browseNumber + "</span>)</a>\n" +
+                            "                        </div>" +
+                            "    </div>";
+                        $("#mid").append(str);
+                      //  alert("加载完毕！")
+                    }
+                    // $("#mid2").remove();
+                    $("#by").remove();
+                    // alert("成功渲染");
+                } else {
+
+                    var tg = typeName + "的类型文章如下:";
+                    var s = " <div class=\"midh\">" + tg + "</div>";
+                    var msg = " <div class=\"mid0\" >" + data.msg + "</div>";
+                    $("#mid").append(s);
+                    $("#mid").append(msg);
+                }
+            }
+        })
+    }
+
+    layui.use(['laypage', 'element', 'layedit', 'table'], function () {
+        var layer = layui.layer,
+            element = layui.element,
+            $ = layui.jquery,
+            table = layui.table;
+        var laypage = layui.laypage;
+
+
+        //执行一个laypage实例
+        //晚期文章回顾
+        loadData();  //请求数据
+        getPage();    //分页操作
+
+
+        i = 0;    //定义一个变量i以判断动画收缩
+        $('#switchNav').click(function () {
+            if (i == 0) {
+                $(".layui-side").animate({width: 'toggle'});
+                $(".layui-body").animate({left: '0px'});
+                $(".layui-footer").animate({left: '0px'});
+                //更换指示图标方向
+                $("#switchNav .layui-icon").text("\ue65b");
+                i++;
+            } else {
+                $(".layui-side").animate({width: 'toggle'});
+                $(".layui-body").animate({left: '200px'});
+                $(".layui-footer").animate({left: '200px'});
+                //更换指示图标方向
+                $("#switchNav .layui-icon").text("\ue65a");
+                i--;
+            }
+        });
+
+        // load('test');
+    });
+    $(function () {
+        var Authorization = $.cookie('Authorization');
+        //  alert(Authorization);
+        if (Authorization != null && Authorization != "") {
+
+            $("#u_index").css("visibility", "visible");
+            //     $("#userindex").append(user_index);
+        } else {
+            $("#u_index").remove();
+            var st = " <div id=\"u_index\">\n" +
+                "                            <a style=\"color: limegreen;margin-left: 30px;\" href=\"/visit/login\" >登录</a>\n" +
+                "                        </div>"
+            $("#userindex").append(st);
+        }
+    })
+
+    function loadData() {
+        $.ajax({
+            type: "get",
+            url: "/visit/selectAllPostByfutures",//对应controller的URL
+            async: false,
+            dataType: 'json',
+            data: {
+                "curr": page,
+                "limit": limit,
+            },
+            success: function (ret) {
+                //   alert(JSON.stringify(ret))
+                total = ret.count;  //设置总条数
+                // console.log(ret);
+                var blogPosts = ret.blogPosts;
+                var len = blogPosts.length;
+                var str = '';
+                // alert(JSON.stringify(blogPosts));
+                if (len > 0) {
+                    $(".mid4").remove();
+                    for (var i = 0; i < len; i++) {
+                        str = " <div class=\"mid4\">\n" +
+                            " <a href=\"/visit/selectPost/"+blogPosts[i].post_id+"\"  class=\"post_title\">\n" +
+                            // "         <a href=\"/visit/selectPost/\"" + blogPosts[i].post_id + "\+ class=\"post_title\" >\n" +
+                            "            <h4>" + blogPosts[i].post_title + " </h4>\n" +
+                            "        </a>\n" +
+                            "        <div class=\"mid_post\" id=\"content" + blogPosts[i].post_id + "\"></div>\n" +
+                            "  <div class=\"comment-r\">\n" +
+                            "\n" +
+                            "                            <i class=\"layui-icon\">&#xe6a4;</i> <a href=\"javascript:;\"><span\n" +
+                            "                               >" + blogPosts[i].user_realname + "</span></a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe696;</i><a style=\"color: darkgray\"><span\n" +
+                            "                                >" + blogPosts[i].post_createDate + "</span></a>\n" +
+                            "\n" +
+                            "                            <i id=\"icon-praisef" + blogPosts[i].post_id + "\" class=\"layui-icon layui-icon-praise\"></i><a href=\"javascript:;\" onclick='addPraise(" + blogPosts[i].post_id + ")'>点赞(<span\n" +
+                            "                                id=\"praisef" + blogPosts[i].post_id + "\" >" + blogPosts[i].post_praise + "</span>)</a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe697;</i><a href=\"/visit/selectPost/" + blogPosts[i].post_id + "\"  >评论(<span>" + blogPosts[i].comment_number + "</span>)</a>\n" +
+                            "                            <i class=\"layui-icon\">&#xe69e;</i><a style=\"color: darkgray\">浏览(<span\n" +
+                            "                               >" + blogPosts[i].post_browseNumber + "</span>)</a>\n" +
+                            "                        </div>" +
+                            "    </div>";
+                        $("#mid31").append(str);
+                        $("#content" + blogPosts[i].post_id).text(blogPosts[i].post_content);
+                    }
+                }
+            }
+        });
+    }
+
+
+    function getPage() {
+        layui.use('laypage', function () {
+            var laypage = layui.laypage;
+
+            //执行一个laypage实例
+            laypage.render({
+                elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                , count: total, //数据总数，从服务端得到
+                limit: limit,   //每页条数设置
+                jump: function (obj, first) {
+                    //obj包含了当前分页的所有参数，比如：
+                    console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                    console.log(obj.limit); //得到每页显示的条数
+                    page = obj.curr;  //改变当前页码
+                    limit = obj.limit;
+                    //首次不执行
+                    if (!first) {
+                        loadData()  //加载数据
+                    }
+                }
+            });
+        });
+    }
+
+    //点赞
+    function addPraise(post_id) {
+        $.ajax({
+            url: '/visit/addPraise/' + post_id,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (data) {
+                // alert(JSON.stringify(data))
+                if (data.code == '0') {
+
+                    $("#praise" + post_id).text(data.praise);
+                    $("#praisef" + post_id).text(data.praise);
+                    // $("#icon-praise").style.color='limegreen';
+                    $("#icon-praise" + post_id).css("color", "green");
+                    $("#icon-praisef" + post_id).css("color", "green");
+                    // $("#icon-praise").css("background-color","limegreen");
+                    //  alert("修改成功" + data.praise);
+
+                } else {
+                    // alert(data.msg);
+                    $("#icon-praise" + post_id).css("color", "green");
+                    $("#icon-praisef" + post_id).css("color", "green");
+                }
+            }, error: function (data) {
+                $("#icon-praise" + post_id).css("color", "green");
+                $("#icon-praisef" + post_id).css("color", "green");
+            },
+        })
+    }
+
+
+    var commid = new Array();
+    var replyid = new Array();
+
+    $(function () {
+        $.ajax({
+            url: '/visit/selectComment/' + post_id,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (res) {
+                //  alert(JSON.stringify(res.blogComments))
+                //  alert(res.blogComments.length);
+
+                if (res.code == 0) {
+                    var blogComments = res.blogComments;
+
+                    // alert(JSON.stringify(blogComments))
+                    // alert(blogComments.length);
+                    var len = blogComments.length;
+                    for (var i = len - 1; i >= 0; i--) {
+                        commid[commid.length + 1] = blogComments[i].comment_id;
+                        var str = "    <div id=\"" + blogComments[i].comment_id + "\" class=\"comment\">\n" +
+                            "                         <span class=\"comment_span\">\n" +
+                            "                             <img src=\"" + blogComments[i].from_image + "\">\n" +
+                            "                             <a href=\"#\" style=\"margin-right: 5px;\" >" + blogComments[i].from_name + "</a>:<i\n" +
+                            "                                 class=\"comment-text\" style=\"margin-left: 5px;\" >" + blogComments[i].comment_content + "</i>\n" +
+                            "                                    <i class=\"comment-actions\">\n" +
+                            "                                 <i class=\".comment-date\" style=\"color: #a4a2a9;\"\n" +
+                            "                                    >" + blogComments[i].comment_date + "</i>\n" +
+                            "                                <i class=\"reply\">\n" +
+                            "                                    <a href=\"javascript:;\" onclick=\"openreply(" + blogComments[i].comment_id + "," + blogComments[i].user_id + ",null)\">回复</a><a\n" +
+                            "                                        style=\"margin-left: 10px;\" href=\"javascript:;\"\n" +
+                            "                                        onclick=\"delete_comment(" + blogComments[i].comment_id + ",null," + blogComments[i].user_id + ")\"> 删除</a>\n" +
+                            "                                </i>\n" +
+                            "                            </i>\n" +
+                            "  <textarea class=\"co" + blogComments[i].comment_id + "\" name=\"\"   style=\"display:none; width: 100%;max-width: 100%;padding: 10px;background-color: #d7dcd7\"  cols=\"5\"\n" +
+                            "                                         rows=\"3\" MaxLength=\"200\" placeholder=\"Say somthing...\"></textarea>\n" +
+                            "                                <button class=\"co" + blogComments[i].comment_id + "\" onclick='reply(" + blogComments[i].comment_id + "," + blogComments[i].user_id + ",null)' style=\" display:none\">发表</button>" +
+                            "                         </span><br/>\n" +
+                            "                        </div>";
+                        $('#comment_list').prepend(str);
+                        var blogReplys = blogComments[i].replyList;
+
+                        var rlen = blogReplys.length;
+                        //     alert("rlen=" + rlen + ",blogReplys=" + JSON.stringify(blogReplys));
+
+                        for (var j = 0; j < rlen; j++) {
+                            replyid[replyid.length + 1] = blogReplys[j].reply_id;
+                            var rp = "<span id=\"" + blogReplys[j].reply_id + "\"\n" +
+                                "                                  style=\"display: block;margin-left: 50px;width:calc(100% - 50px);border-bottom: 1px dashed darkgrey;\">\n" +
+                                "                             <img class=\"\"\n" +
+                                "                                  style=\"width: 1.5rem;height: 1.5rem;border-radius: 50%;border: 2px solid darkgrey;\"\n" +
+                                "                                  src=\"" + blogReplys[j].fr_image + "\">\n" +
+                                "                                 <a href=\"#\" >" + blogReplys[j].fr_name + "</a><i\n" +
+                                "                                    style=\"color: #a4a2a9;margin-left: 5px;margin-right: 6px;\">回复<i\n" +
+                                "                                    style=\"margin-left: 3px;\" >" + blogReplys[j].to_name + "</i></i>: <i class=\"comment-text\"\n" +
+                                "                                                                                         >" + blogReplys[j].reply_content + "</i><i\n" +
+                                "                                    class=\"comment-actions\">\n" +
+                                "                                 <i class=\".comment-date\" style=\"color: #a4a2a9;\"\n" +
+                                "                                    >" + blogReplys[j].reply_date + "</i>\n" +
+                                "                                <i class=\"reply\"><a href=\"javascript:;\" onclick=\"openreply(" + blogReplys[j].comment_id + "," + blogReplys[j].from_id + "," + blogReplys[j].reply_id + ")\">回复</a><a\n" +
+                                "                                        style=\"margin-left: 10px;\" href=\"javascript:;\"\n" +
+                                "                                        onclick=\"delete_comment(" + blogReplys[j].comment_id + "," + blogReplys[j].reply_id + "," + blogReplys[j].from_id + ")\">删除</a></i>\n" +
+                                "                            </i>\n" +
+                                "  <textarea class=\"re" + blogReplys[j].reply_id + "\" name=\"\" style=\"display:none; width: 100%;max-width: 100%;padding: 10px;background-color: #d7dcd7\"  cols=\"5\"\n" +
+                                "                                         rows=\"3\" MaxLength=\"200\" placeholder=\"Say somthing...\"></textarea>\n" +
+                                "                                <button class=\"re" + blogReplys[j].reply_id + "\" onclick=\"reply(" + blogReplys[j].comment_id + "," + blogReplys[j].from_id + "," + blogReplys[j].reply_id + ")\" style=\" display:none\">发表</button>" +
+                                "                         </span><br/>";
+                            if (blogReplys[j].reply_id != null)
+                                $('#' + blogReplys[j].comment_id).append(rp);
+
+                        }
+                    }
+                    $('#common').text(res.comment_num);
+                } else {
+                  //  alert(res.msg);
+                }
+            }
+        })
+    })
+
+    //发表评论
+    function addComment() {
+
+        var comment_text = $('#comment_text').val();
+        var Authorization = $.cookie('Authorization');
+        //  alert("文章id=" + post_id + ",文章作者id=" + user_id + ",评论内容text=" + comment_text + ",cookie=" + Authorization);
+        if (Authorization != null && comment_text != "") {
+            $.ajax({
+                url: '/user/addComment',
+                type: 'POST',
+                data: {"post_id": post_id, "comment_content": comment_text},
+                dataType: 'JSON',
+                success: function (res) {
+                    if (res.code == 0) {
+
+                        // alert("发表成功：" + JSON.stringify(res.blogComment));
+                        var blogComment = res.blogComment;
+                        commid[commid.length + 1] = blogComment.comment_id;
+                        // alert("发表成功：" + JSON.stringify(blogComment));
+                        var str = "    <div id=\"" + blogComment.comment_id + "\" class=\"comment\">\n" +
+                            "                         <span class=\"comment_span\">\n" +
+                            "                             <img src=\"" + blogComment.from_image + "\">\n" +
+                            "                             <a href=\"#\" style=\"margin-right: 5px;\" >" + blogComment.from_name + "</a>:<i\n" +
+                            "                                 class=\"comment-text\" style=\"margin-left: 5px;\" >" + blogComment.comment_content + "</i>\n" +
+                            "                                    <i class=\"comment-actions\">\n" +
+                            "                                 <i class=\".comment-date\" style=\"color: #a4a2a9;\"\n" +
+                            "                                    >" + blogComment.comment_date + "</i>\n" +
+                            "                                <i class=\"reply\">\n" +
+                            "                                    <a href=\"javascript:;\" onclick=\"openreply(" + blogComment.comment_id + "," + blogComment.user_id + ",null)\">回复</a><a\n" +
+                            "                                        style=\"margin-left: 10px;\" href=\"javascript:;\"\n" +
+                            "                                        onclick=\"delete_comment(" + blogComment.comment_id + ",null," + blogComment.user_id + ")\"> 删除</a>\n" +
+                            "                                </i>\n" +
+                            "                            </i>\n" +
+                            "  <textarea class=\"co" + blogComment.comment_id + "\" name=\"\" style=\"display:none; width: 100%;max-width: 100%;padding: 10px;background-color: #d7dcd7\"  cols=\"5\"\n" +
+                            "                                         rows=\"3\" MaxLength=\"200\" placeholder=\"Say somthing...\"></textarea>\n" +
+                            "                                <button class=\"co" + blogComment.comment_id + "\" onclick='reply(" + blogComment.comment_id + "," + blogComment.user_id + ",null)' style=\" display:none\">发表</button>" +
+                            "                         </span><br/>\n" +
+                            "                        </div>"
+                        $('#comment_list').prepend(str);
+                        $('#common').text(res.comment_num);
+                        // alert('添加成功');
+                        $('#comment_text').val("");
+                    }
+                }, error: function (res) {
+                    alert("发表失败！");
+                },
+            })
+        } else {
+            if (comment_text == null)
+                alert("评论不能为空！");
+            else alert('请先登录!');
+        }
+    }
+
+    //回复评论
+    function openreply(comment_id, to_id, reply_id) {
+        // $(but).css("display",'block');
+        for (var l = 0; l < commid.length; l++) {
+            $(".co" + commid[l]).css("display", "none");
+        }
+        for (var l = 0; l < replyid.length; l++) {
+            $(".re" + replyid[l]).css("display", "none");
+        }
+        if (reply_id == null || reply_id == '') {
+
+            //   alert("reply_id=" + reply_id + ",comment_id=" + comment_id)
+            // alert(".re+comment_id=" + comment_id);
+            $(".co" + comment_id).css("display", "block");
+        } else {
+            // alert(".re+reply_id=" + reply_id);
+            $(".re" + reply_id).css("display", "block");
+        }
+    }
+
+    function reply(comment_id, to_id, reply_id) {
+
+
+        // alert("88888888888888888888"+commid[0]+commid[1]);
+        var flag = 1;
+        var but = null;
+        if (reply_id == null || reply_id == '') {
+            flag = 0;
+            but = ".co" + comment_id;
+        } else {
+            // alert(".re+reply_id=" + reply_id);
+            but = ".re" + reply_id;
+        }
+
+        // alert("reply:comment_id=" + comment_id + ",to_id=" + to_id);
+        var reply_content = $(but).val();
+        var Authorization = $.cookie('Authorization');
+        if (flag == 0) {
+            $(but).css("display", "none");
+        } else {
+            $(but).css("display", "none");
+        }
+
+        // alert("文章id=" + post_id + ",文章作者id=" + user_id + ",评论内容 reply_content=" + reply_content + ",cookie=" + Authorization);
+        if ((Authorization != null && Authorization != '') && (reply_content != '' && reply_content != null)) {
+            //    alert("to_id=" + to_id);
+            $.ajax({
+                url: '/user/replyComment',
+                type: 'POST',
+                data: {
+                    "to_id": to_id,
+                    "post_id": post_id,
+                    "comment_id": comment_id,
+                    "reply_id": reply_id,
+                    "reply_content": reply_content
+                },
+                dataType: 'JSON',
+                success: function (res) {
+                    var blog_reply = res.blog_reply;
+                    replyid[replyid.length + 1] = blog_reply.reply_id;
+                    if (res.code == 0) {
+                        var str = "<span id=\"" + blog_reply.reply_id + "\"\n" +
+                            "                                  style=\"display: block;margin-left: 50px;width:calc(100% - 50px);border-bottom: 1px dashed darkgrey;\">\n" +
+                            "                             <img class=\"\"\n" +
+                            "                                  style=\"width: 1.5rem;height: 1.5rem;border-radius: 50%;border: 2px solid darkgrey;\"\n" +
+                            "                                  src=\"" + blog_reply.fr_image + "\">\n" +
+                            "                                 <a href=\"#\" >" + blog_reply.fr_name + "</a><i\n" +
+                            "                                    style=\"color: #a4a2a9;margin-left: 5px;margin-right: 6px;\">回复<i\n" +
+                            "                                    style=\"margin-left: 3px;\" >" + blog_reply.to_name + "</i></i>: <i class=\"comment-text\"\n" +
+                            "                                                                                         >" + blog_reply.reply_content + "</i><i\n" +
+                            "                                    class=\"comment-actions\">\n" +
+                            "                                 <i class=\".comment-date\" style=\"color: #a4a2a9;\"\n" +
+                            "                                    >" + blog_reply.reply_date + "</i>\n" +
+                            "                                <i class=\"reply\"><a href=\"javascript:;\" onclick=\"openreply(" + blog_reply.comment_id + "," + blog_reply.from_id + "," + blog_reply.reply_id + ")\">回复</a><a\n" +
+                            "                                        style=\"margin-left: 10px;\" href=\"javascript:;\"\n" +
+                            "                                        onclick=\"delete_comment(" + blog_reply.comment_id + "," + blog_reply.reply_id + "," + blog_reply.from_id + ")\">删除</a></i>\n" +
+                            "                            </i>\n" +
+                            "  <textarea class=\"re" + blog_reply.reply_id + "\" name=\"\" style=\"display:none; width: 100%;max-width: 100%;padding: 10px;background-color: #d7dcd7\"  cols=\"5\"\n" +
+                            "                                         rows=\"3\" MaxLength=\"200\" placeholder=\"Say somthing...\"></textarea>\n" +
+                            "                                <button class=\"re" + blog_reply.reply_id + "\" onclick=\"reply(" + blog_reply.comment_id + "," + blog_reply.from_id + "," + blog_reply.reply_id + ")\" style=\" display:none\">发表</button>" +
+                            "                         </span><br/>";
+                        $('#' + blog_reply.comment_id).append(str);
+                        $('#common').text(res.comment_num);
+                        $('#comment_text').val("");
+                        $(but).val("");
+                    } else {
+                    //    alert(msg);
+                        $('#comment_text').val("");
+                        $(but).val("");
+                    }
+                },
+                error: function (res) {
+                    alert("发表失败！");
+                    $('#comment_text').val("");
+                    $(but).val("");
+                }
+            })
+
+        } else {
+            if (reply_content == null || reply_content == '')
+                alert("评论不能为空！");
+            else
+              layer.msg('请先登录!');
+        }
+    }
+
+    //删除评论
+    function delete_comment(comment_id, reply_id, from_id) {
+        // alert("delete_comment:comment_id=" + comment_id + ",reply_id=" + reply_id);
+        var Authorization = $.cookie('Authorization');
+        if (Authorization != null && Authorization != '' && Authorization != 'undefine') {
+            if (reply_id != null && reply_id != '') {
+
+                $.ajax({
+                    url: '/user/deleteReply',
+                    type: 'delete',
+                    data: {"post_id": post_id, "comment_id": comment_id, "reply_id": reply_id, "from_id": from_id},
+                    dataType: 'JSON',
+                    success: function (res) {
+
+                        if (res.code == 0) {
+                            $('#common').text(res.comment_num);
+                            $('#' + reply_id).remove();
+                        } else {
+                            alert(res.msg);
+                        }
+                    }
+                })
+
+            } else {
+                $.ajax({
+                    url: '/user/deleteComment',
+                    type: 'delete',
+                    data: {"comment_id": comment_id, "user_id": from_id, "post_id": post_id},
+                    dataType: 'JSON',
+                    success: function (res) {
+                        if (res.code == 0) {
+                            $('#common').text(res.comment_num);
+                            $('#' + comment_id).remove();
+                        } else {
+                            alert(res.msg);
+                        }
+                    }
+                })
+
+            }
+        } else {
+           layer.msg('请先登录!');
+        }
+    }
+
+    //点赞
+    function addPraise() {
+        var post_id = $("#post_id").val();
+        var user_id = $("#user_id").val();
+        var realname = $("#realname").val();
+
+        // alert(post_id + "," + user_id + "," + realname);
+
+        $.ajax({
+            url: '/visit/addPraise/' + post_id,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (data) {
+                // alert(JSON.stringify(data))
+                if (data.code == '0') {
+
+                    $("#praise").text(data.praise);
+                    // $("#icon-praise").style.color='limegreen';
+                    $("#icon-praise").css("color", "green");
+                    // $("#icon-praise").css("background-color","limegreen");
+                   // alert("修改成功" + data.praise);
+
+                } else {
+                  //  alert(data.msg);
+                    $("#icon-praise").css("color", "green");
+                }
+            }, error: function (data) {
+                $("#icon-praise").style.color = 'limegreen';
+            },
+        })
+    }
+
+</script>
+<script>
+
+</script>
+</html>

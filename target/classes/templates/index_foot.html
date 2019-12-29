@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="copyright">
+    <footer style="background-color:black;width: 100%;background-size:100%;background-size: cover">
+        <div id="footer" class="row"
+             style="width: 100%;background-color: black;background-size: 100%;color: whitesmoke">
+            <div class="col-md-6">
+                <div style="margin-top: 20px;margin-left: 100px;"><p>云海归来<i>版权所有</i>|<i th:text="${blogInfom?.icp}">粤ICP备19089644号-1</i>
+                </p>
+                    <!-- copyright © 2018 myblog--></div>
+            </div>
+            <div class="col-md-6" style="margin-top:20px; "><p>Copyright © 2018 myblog站长统计：在线人数:<i
+                    th:text="${blogInfom?.onlineNumber}">0</i>|浏览人数:<i th:text="${blogInfom?.vistNumber}">0</i></p>
+            </div>
+        </div>
+    </footer><!--页脚结束-->
+</div>
+</html>

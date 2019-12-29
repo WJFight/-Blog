@@ -1,0 +1,36 @@
+<!DOCTYPE mapper    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myblog.wj.dao.personalUser.BlogUserDao">
+    <!--    <cache type="org.mybatis.caches.ehcache.EhcacheCache">-->
+    <!--        <property name="timeToIdleSeconds" value="3600"/>-->
+    <!--        <property name="timeToLiveSeconds" value="3600"/>-->
+    <!--    </cache>-->
+
+    <update id="updateBlogUserByUsername" parameterType="blogUser">
+        update blog_user
+        <set>
+            <if test="user_realname!=null and user!=''">user_realname=#{user_realname}</if>
+            <if test="password!=null">password=#{password}</if>
+            <if test="user_phone!=null">user_phone=#{user_phone}</if>
+            <if test="user_image!=null">user_image=#{user_image}</if>
+            <if test="version!=null">version=#{version}+1</if>
+        </set>
+        where username=#{username} and version=#{version}
+    </update>
+
+    <select id="selectVersionByUsername" parameterType="String">
+        select version from blog_user where username#{username}
+    </select>
+
+    <select id="selectBlogRoleByUser_id" parameterType="Integer" resultType="blogRole">
+        select role.* from blog_user user
+        inner join blog_role_user ru on user.user_id=ru.user_id
+        inner join blog_role role on role.role_id=ru.role_id
+        where user.user_id=#{user_id}
+    </select>
+
+
+    <select id="selectBlogUserByUsername" parameterType="String" resultType="blogUser">
+        select * from blog_user where blog_user.username=#{username}
+    </select>
+
+</mapper>

@@ -1,0 +1,188 @@
+<!--<!DOCTYPE html>-->
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<!--<head>-->
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>写博客文章</title>
+<link rel="stylesheet" type="text/css" th:href="@{../../static/editor.md-master/examples/css/style.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{../../static/editor.md-master/css/editormd.css}"/>
+<link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon"/>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+      integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+<div class="content">
+    <div class="container-fluid">
+        <div class="card-header">
+            <h3 class="card-title">编辑文章</h3>
+        </div>
+
+        <form role="form" class="layui-form layui-form-pane" id="typeForm">
+            <div class="form-group layui-form-item">
+                <input type="text" class="form-control col-sm-12 post_title" id="post_title" name="post_title"
+                       placeholder="*请输入文章标题(必填)"
+                       th:value="${blogPost!=null and blog.post_title!=null }?${blogPost.post_title}: ''"
+                       required="true" style="width: 75%;">
+
+            </div>
+            <div class="form-group">
+
+                <!-- 文章内容-->
+                <div id="test-editormd">
+                    <textarea style="display:none;" id="textContent" name="post_content"
+                              th:utext="${blogPost!=null and blogPost.post_content !=null}?${blogPost.post_content}: ''"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group align ml-3">
+                <div class="row">
+                    <div class="col-md-12 align">
+                        文章标签：
+                        <!--文章标签tag-->
+                        <input type="text" class="align " id="blogTags" name="blogTags"
+                               placeholder="请输入文章标签"
+                               th:value="${blogPost!=null and blogPost.blogTags!=null }?${blogPost.blogTags}: ''"
+                               style="width: 60%;">(标签以'/'分割)
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="form-group align my-2">
+                <div class="row ml-3">
+
+
+                    <div class="col-md-9 ">
+                        个人分类：
+                        <!--                        博客个人分类-->
+                        <select class="" style="width:15%;" id="category_id"
+                                data-placeholder="请选择分类..." name="category_id">
+                            <th:block th:if="${null == blogCategoryList}">
+                                <option value="0" selected="selected">默认分类</option>
+                            </th:block>
+                            <th:block th:unless="${null == blogCategoryList}">
+                                <th:block th:each="c : ${blogCategoryList}">
+                                    <option th:value="${c.category_id}" th:text="${c.category_name}"
+                                            th:selected="${null !=blogPost and null !=blogPost.blogCategoryId and blog.blogCategoryId==c.categoryId} ?true:false">
+                                    </option>
+                                </th:block>
+                            </th:block>
+                        </select>
+
+                        <!--博文类型-->
+                        博客类型：
+                        <select class="mr-5" style="width:15%; color: black"
+                                th:value="${blogPost!=null and blogPost.type_id !=null}?${blogPost.type_id}: ''"
+                                name="type_id">
+                            <option th:value="0">Java基础</option>
+                            <option th:value="1">JavaWeb</option>
+                            <option th:value="2">Mybatis</option>
+                            <option th:value="3">JVM</option>
+                            <option th:value="4">SpringMVC</option>
+                            <option th:value="5">SpringBoot</option>
+                            <option th:value="6">SpringCloud</option>
+                            <option th:value="7">SpringSecurity</option>
+                            <option th:value="8">MySQL</option>
+                            <option th:value="9">Oracle</option>
+                            <option th:value="10">Redis</option>
+                            <option th:value="11">多线程并发</option>
+                            <option th:value="12">网站构建</option>
+                            <option th:value="13">前端系列</option>
+                            <option th:value="14">分布式学习</option>
+                            <option th:value="15">缓存或加密</option>
+                            <option th:value="16">缓存或加密</option>
+                            <option th:value="17">其他</option>
+                        </select>
+                        发布形式：
+                        <label><input name="post_switch" checked="checked" type="radio" value="0"/>公开</label>
+                        <label><input name="post_switch" type="radio" value="1"/>私密</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row align">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary align">
+                    发布
+                </button>
+                <button type="button" class="btn btn-primary align">
+                    返回
+                </button>
+            </div>
+        </div>
+
+    </div><!--container-fluid-->
+</div><!--content-->
+
+<script type="text/javascript" th:src="@{../../static/editor.md-master/examples/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{../../static/editor.md-master/editormd.min.js}"></script>
+<script type="text/javascript">
+    var testEditor;
+    $(function () {
+        testEditor = editormd("test-editormd", {
+            width: "75%",
+            height: 640,
+            path: '../../static/editor.md-master/lib/',
+            theme: "white",
+            previewTheme: "white",
+            // editorTheme: "paraiso-light",
+            // markdown: md,
+            codeFold: true,
+            syncScrolling: "single",
+            saveHTMLToTextarea: true,    // 保存 HTML 到 Textarea
+            searchReplace: true,
+            //watch : false,                // 关闭实时预览
+            htmlDecode: "style,script,iframe|on*",            // 开启 HTML 标签解析，为了安全性，默认不开启
+            //toolbar  : false,             //关闭工具栏
+            //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
+            emoji: true,
+            taskList: true,
+            tocm: true,         // Using [TOCM]
+            tex: true,                   // 开启科学公式TeX语言支持，默认关闭
+            flowChart: true,             // 开启流程图支持，默认关闭
+            sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭,
+            imageUpload: true,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "/user/uploadFile",
+            onload: function () {
+                console.log('onload', this);
+            }
+
+        });
+    });
+    // function saveHtml() {
+    //     // console.log($("#text").text());
+    //     console.log($("#textContent").text());
+    //     $.ajax({
+    //         url: "/user/addPost",
+    //         type: "post",
+    //         async: true,
+    //         data: {
+    //             "post_content": $("#text").text(),
+    //             "post_title": $("#textContent").text()
+    //         },
+    //         dataType: "json",
+    //         success: function (data) {
+    //             alert(data.msg);
+    //         },
+    //         error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //             alert(XMLHttpRequest.status);
+    //             alert(XMLHttpRequest.readyState);
+    //             alert(textStatus); // paser error;
+    //         }
+    //     });
+    // }
+</script>
+
+<!--</body>-->
+</html>

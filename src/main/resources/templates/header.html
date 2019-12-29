@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <title>个人中心</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" type="text/css"/>
+    <!--</head>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" th:href="@{../static/editor.md-master/examples/css/style.css}"
+          href="../static/editor.md-master/examples/css/style.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{../static/editor.md-master/css/editormd.css}"
+          href="../static/editor.md-master/css/editormd.css"/>
+    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon"/>
+
+    <style>
+        .head {
+            color: white;
+            height: 60px;
+            background-color: black;
+        }
+
+        .serach {
+            height: 40px;
+            width: 30px;
+        }
+
+        .container-fluid {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        .navbar-expand-lg .navbar-nav li {
+            display: inline-block;
+            float: none;
+            text-align: center;
+        }
+
+        .lidiv {
+            background-color: black;
+        }
+
+        .dropdown-menu a {
+            color: white;
+        }
+
+        .ulstyle {
+            background-color: black;
+        }
+
+        .ulstyle li {
+            width: 150px;
+        }
+
+        .formserch {
+            color: white
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="container-fluid">
+    <div class="layui-header">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg   navbar-dark ">
+
+                    <button class="navbar-toggler" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse"
+                            type="button">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <a class="navbar-brand ml-5" href="#">W_J_M</a>
+                    <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+                        <ul class="navbar-nav ulstyle">
+                            <li class="nav-item active">
+                                <a class="nav-link">网站首页<span class="sr-only">(current)</span></a>
+                            </li>
+
+                            <li class="nav-item dropdown ">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="javaLink">JAVA基础</a>
+                                <div aria-labelledby="javaLink" class="dropdown-menu lidiv ">
+                                    <a class="dropdown-item" href="javascript:;" onclick="load('test')">JAVA基础</a>
+                                    <a class="dropdown-item" href="javascript:;"
+                                       onclick="load('editorPost')">JavaWeb</a>
+                                    <a class="dropdown-item" href="#">Mybatis</a>
+                                    <a class="dropdown-item" href="#">Exception</a>
+                                    <a class="dropdown-item" href="#">JVM</a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                                   id="serverLink">DataBase</a>
+                                <div aria-labelledby="serverLink" class="dropdown-menu lidiv">
+                                    <a class="dropdown-item" href="#">MySQL</a>
+                                    <a class="dropdown-item" href="#">Oracle</a>
+                                    <a class="dropdown-item" href="#">Redis</a>
+
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown ">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                                   id="springLink">Spring系列</a>
+                                <div aria-labelledby="springLink" class="dropdown-menu lidiv">
+                                    <a class="dropdown-item" href="#">Spring</a>
+                                    <a class="dropdown-item" href="#">SpringMVC</a>
+                                    <a class="dropdown-item" href="#">SpringBoot</a>
+                                    <a class="dropdown-item" href="#">SpringCloud</a>
+                                    <a class="dropdown-item" href="#">SpringSecurity</a>
+                                </div>
+                            </li>
+
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                                   id="webLink">其他系列</a>
+                                <div aria-labelledby="webLink" class="dropdown-menu lidiv">
+                                    <a class="dropdown-item" href="#">多线程|并发</a>
+                                    <a class="dropdown-item" href="#">网站搭建</a>
+                                    <a class="dropdown-item" href="#">前端系列</a>
+                                    <a class="dropdown-item" href="#">缓存|加密</a>
+                                    <a class="dropdown-item" href="#">分布式学习</a>
+                                    <a class="dropdown-item" href="#">其他</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <form action="" class="form-inline " method="get">
+                            <input aria-label="Search" class="form-control mr-sm-1 serach" placeholder="Search"
+                                   type="search">
+                            <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
+                        </form>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="body-content" style="text-align: center">
+                <div class="col-md-12" id="post"></div>
+                <!-- 内容主体区域 -->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="layui-footer">
+                <!-- 底部固定区域 -->
+                Copyright © 2018 myblog
+            </div>
+        </div>
+    </div>
+</div>
+<!--<footer th:fragment="footer1">-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript" th:src="@{../static/editor.md-master/examples/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{../static/editor.md-master/editormd.min.js}"></script>
+
+<script th:src="@{/layui/layui.all.js}" type="text/javascript"/>
+<!--<script th:src="@{/js/admin.js}" type="text/javascript"></script>-->
+<!-- 博客管理工具条渲染模版-->
+<script id="blog_table_bar" type="text/html">
+    <a class="layui-btn layui-btn-xs" lay-event="view">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+</footer>
+<script>
+    layui.use(['element', 'layedit', 'table'], function () {
+        var layer = layui.layer,
+            element = layui.element,
+            $ = layui.jquery,
+            table = layui.table;
+
+        i = 0;    //定义一个变量i以判断动画收缩
+        $('#switchNav').click(function () {
+            if (i == 0) {
+                $(".layui-side").animate({width: 'toggle'});
+                $(".layui-body").animate({left: '0px'});
+                $(".layui-footer").animate({left: '0px'});
+                //更换指示图标方向
+                $("#switchNav .layui-icon").text("\ue65b");
+                i++;
+            } else {
+                $(".layui-side").animate({width: 'toggle'});
+                $(".layui-body").animate({left: '200px'});
+                $(".layui-footer").animate({left: '200px'});
+                //更换指示图标方向
+                $("#switchNav .layui-icon").text("\ue65a");
+                i--;
+            }
+        });
+        // load('test');
+
+    });
+
+    function load(view) {
+        layui.use(['element'], function () {
+            alert("进来了==" + view);
+            var $ = layui.jquery,
+                element = layui.element;
+            $(".layui-body").load("/static/html/" + view + ".html", function () {
+                //请求数据
+                $(function () {
+                    // alert("进来了")
+                    $.ajax({
+//提交数据的类型 POST GET
+                        type: "GET",
+//提交的网址
+                        url: "/user/selectAllPost",
+//提交的数据
+//返回数据的格式
+                        datatype: " json",//“xml”, “html”, “script”, “json”, “jsonp”, “text”.
+//成功返回之后调用的函数
+                        success: function (data) {
+                            var blogPosts = data.blogPosts;
+                            var str = '';
+                            $.each(blogPosts, function (i, n) {
+                                str += ' <div class="article-right">';
+                                str += '<div class="article-right">';
+                                str += '<div class="article-title">';
+                                str += '<a th:href="@{' / visit / selectPost / '+blogPosts[i].post_id}"> <span >blogPosts[i].post_title</span></a></div>';
+                                <!-- 文章摘要 -->
+                                str += '<div class="article-abstract"> <p style="overflow:hidden">blogPosts[i].post_content</p> </div></div>';
+                                <!-- 文章的访问信息 -->
+                                str += ' <div class="article-footer"><span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;';
+                                str += '<span >blogPosts[i].post_createDate</span></span> <span>';
+                                // str += ' <i class="fa fa-tag"></i>&nbsp;&nbsp;<a th:href="@{\'/index/home.html?typeId=\'+${blog.blogType.id}}">';
+                                // str += '<span\n' + 'th:text="${blog.blogType.typeName}">类型</span></a>' < /span>';
+                                str += '<span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;<span>blogPosts[i].comment_id</span></span> ';
+                                str += '</div>';
+                                $("#post").html(str);
+                            })
+                        }
+
+                        ,
+                        error: function () {
+                            alert("加载个人信息失败！！！");
+                        }
+                    });
+                })
+            });
+        });
+        return false;
+    }
+
+</script>
+</body>
+</html>

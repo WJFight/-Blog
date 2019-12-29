@@ -1,0 +1,26 @@
+spring:
+  redis:
+    port: 6379
+    database: 0
+    timeout: 5000
+    host: 127.0.0.1
+#    redis连接池
+    jedis:
+      pool:
+        max-active: 12
+        max-idle: 8
+        min-idle: 2
+#    sentinel:
+#      master: mymaster
+#      nodes: 192.168.2.128:26379,192.168.2.129:26379,192.168.2.130:26379
+  # 文件上传
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0
+      max-file-size: 100MB
+      max-request-size: 30MB
+      resolve-lazily: false
+
+
+

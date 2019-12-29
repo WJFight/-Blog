@@ -1,0 +1,34 @@
+<!DOCTYPE mapper    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myblog.wj.dao.personalUser.BlogCommentDao">
+
+    <!--    查一条评论及其子评论-->
+    <select id="selectCommentByPost_id" parameterType="Integer" resultMap="blogComment">
+            select  bc.*,br.*   from blog_comment as  bc left join blog_reply as br on
+            bc.comment_id=br.comment_id
+             where post_id=#{post_id}
+            order by bc.comment_date desc
+        </select>
+    <resultMap id="blogComment" type="blogComment">
+        <id column="comment_id" property="comment_id"/>
+        <result column="post_id" property="post_id"/>
+        <result column="comment_content" property="comment_content"/>
+        <result column="user_id" property="user_id"/>
+        <result column="from_image" property="from_image"/>
+        <result column="from_name" property="from_name"/>
+        <result column="comment_date" property="comment_date"/>
+        <result column="comment_support" property="comment_support"/>
+        <result column="version" property="version"/>
+        <collection property="replyList" ofType="blogReply" autoMapping="true">
+            <!--            <id column="reply_id" property="reply_id"/>-->
+            <!--            <result column="from_id" property="from_id"/>-->
+            <!--            <result column="to_id" property="to_id"/>-->
+            <!--            <result column="comment_id" property="comment_id"/>-->
+            <!--            <result column="from_name" property="from_name"/>-->
+            <!--            <result column="to_name" property="to_name"/>-->
+            <!--            <result column="from_image" property="from_image"/>-->
+            <!--            <result column="reply_content" property="reply_content"/>-->
+            <!--            <result column="reply_date" property="reply_date"/>-->
+        </collection>
+    </resultMap>
+</mapper>

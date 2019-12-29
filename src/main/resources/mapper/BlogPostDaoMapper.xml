@@ -1,0 +1,9 @@
+<!DOCTYPE mapper    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myblog.wj.dao.personalUser.BlogPostDao">
+    <select id="selectBlogPostByTime" resultType="blogPost">
+        select * from blog_post order by post_createDate desc limit 5
+    </select>
+    <select id="selectAllBlogPostByType_id" parameterType="Integer" resultType="blogPost">
+        select * from blog_post where type_id=#{type_id}
+    </select>
+</mapper>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+
+
+        html, body {
+            height: 100%;
+            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+            position: relative;
+            /*background-image: url("/images/h6.jpeg");*/
+            background-size: cover;
+            box-sizing: border-box;
+        }
+
+        .wrapper {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            width: 500px;
+            height: 50%;
+        }
+
+        .head img {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            box-sizing: border-box;
+            height: 50px;
+        }
+
+        .main {
+            position: relative;
+            top: 60px;
+            height: 70%;
+            /*height: 240px;*/
+        }
+
+        a {
+            text-decoration: none !important;
+            color: white;
+            font-size: 12px;
+        }
+
+        .captcha > img {
+            box-sizing: border-box;
+            float: right;
+            width: 40%;
+            height: 38px;
+            cursor: pointer;
+        }
+
+        .layui-input {
+            padding-left: 35px !important;
+        }
+
+        .layui-icon {
+            font-size: 22px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrapper container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main">
+                <!--<fieldset>-->
+                <form class="layui-form" id="form1" name="loginForm" method="post" style="display: none">
+                    <div class="layui-form-item">
+                        <i class="layui-icon" style="color: black;position: absolute;top: 2px;left: 0px;">&#xe611;</i>
+                        <input class="layui-input" type="text" id="username" name="username" th:value="${username}"
+                               autocomplete="off"
+                               placeholder="用户名" lay-verify="require"/>
+                    </div>
+                    <div class="layui-form-item captcha">
+                        <input id="imagcode" name="captcha" th:value="${imageCode}"/>
+                        <input name="remember-me" type="checkbox" value="true"/>记住我
+                    </div>
+                </form>
+                <!--</fieldset>-->
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/layui/layui.js}"/>
+
+<script type="text/javascript" src="/layui/layui.js"></script>
+
+<script>
+    // alert(JSON.stringify("第三方登录" +imageCode+username));
+    layui.use(['layer', 'form'], function () {
+        //加载所需模块
+        var layer = layui.layer,
+            form = layui.form,
+            $ = layui.jquery;
+        //  alert(JSON.stringify("第三方登录" +imageCode+username));
+        qqlogin();
+    });
+
+    function qqlogin() {
+        $.ajax({
+            url: "/visit/loginBlogUser",
+            async: false,
+            dataType: 'json',
+            data: $("#form1").serialize(),
+            type: "post",
+            success: function (result, response) {
+                if (result.code == 0) {
+                    //   alert("成功");
+                    $(location).attr("href", "/");
+
+                } else {
+                    if (result.msg === "error") {
+                        layer.alert('系统错误', {icon: 2});
+                    } else if (result.msg === "wrong") {
+                        layer.alert('用户名或密码密码错误', {icon: 2});
+                    } else if (result.msg === "denied") {
+                        layer.alert('权限不足', {icon: 2});
+                    } else {
+                        layer.alert("验证码错误", {icon: 2});
+                    }
+                    //请求新的验证码
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

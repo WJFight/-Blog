@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <title>个人中心</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" type="text/css"/>
+    <!--</head>-->
+
+    <link rel="stylesheet" type="text/css" th:href="@{../../static/editor.md-master/examples/css/style.css}"
+          href="../../static/editor.md-master/examples/css/style.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{../../static/editor.md-master/css/editormd.css}"
+          href="../../static/editor.md-master/css/editormd.css"/>
+    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+
+
+    <style>
+        .layui-layout-admin .layui-header {
+            background-color: #23262E;
+        }
+
+        .layui-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .layui-layout-left {
+            padding: 0;
+        }
+
+        #searchInput, #searchScope, #searchBtn {
+            margin-left: 30px;
+        }
+
+        .layui-table-body {
+            overflow: hidden;
+        }
+
+
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+
+        <div class="layui-logo">个人后台中心</div>
+
+        <!-- 水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item" id="switchNav" lay-unselect="">
+                <a href="javascript:;"><i class="layui-icon">&#xe65a;</i></a>
+            </li>
+            <li class="layui-nav-item" id="searchInput" lay-unselect="">
+                <input autocomplete="off" class="layui-input" name="search">
+            </li>
+
+            <li class="layui-nav-item" id="searchBtn" lay-unselect="">
+                <button class="layui-btn search-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+            </li>
+            <li class="layui-nav-item" id="visit_index" lay-unselect="">
+                <a href="/">博客首页</a>
+            </li>
+            <li class="layui-nav-item" id="searchScope">
+                <a href="javascript:;">世界之窗</a>
+                <dl class="layui-nav-child layui-anim layui-anim-upbit">
+                    <dd><a href="javascript:;" onclick="load('friends_admin')">友圈</a></dd>
+                    <dd><a href="">分类</a></dd>
+                </dl>
+            </li>
+        </ul>
+
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;" id="username">
+                    <img id="head" th:src="@{${blogUser.user_image}}" class="layui-nav-img">
+                    <span id="username1" th:text="${blogUser.user_realname}"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;" onclick="load('password_admin')">修改密码</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="/user/signOut">注销</a></li>
+
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+
+        <div class="layui-side-scroll">
+            <!-- 左侧导航 -->
+            <ul class="layui-nav layui-nav-tree">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;" onclick="load('personal')">个人信息</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">博客管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="layui-this"><a href="javascript:;" onclick="load('editorPost')">写博客</a></dd>
+                        <dd><a href="javascript:;" onclick="load('blog_admin')">文章管理</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item ">
+                    <a href="javascript:;">评论管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="layui-this"><a href="javascript:;" onclick="load('comment_admin')">根评论管理</a></dd>
+                        <dd><a href="javascript:;" onclick="load('reply_admin')">子评论管理</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">分类管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="layui-this"><a href="javascript:;" onclick="load('type_admin')">博客分类管理</a></dd>
+                        <dd><a href="javascript:;" onclick="load('createCategory_admin')">新建分类</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        Copyright © 2018 myblog
+    </div>
+</div>
+<script type="text/javascript" th:src="@{../../static/editor.md-master/examples/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{../../static/editor.md-master/editormd.min.js}"></script>
+
+<script th:src="@{/layui/layui.all.js}" type="text/javascript"/>
+<!--<script th:src="@{/js/admin.js}" type="text/javascript"></script>-->
+<!-- 博客管理工具条渲染模版-->
+<script id="blog_table_bar" type="text/html">
+    <a class="layui-btn layui-btn-xs" lay-event="view">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+<script>
+
+
+    layui.use(['element', 'layedit', 'table'], function () {
+        var laypage = layui.laypage;
+        var layer = layui.layer,
+            element = layui.element,
+            $ = layui.jquery,
+            table = layui.table;
+
+
+        i = 0;    //定义一个变量i以判断动画收缩
+        $('#switchNav').click(function () {
+            if (i == 0) {
+                $(".layui-side").animate({width: 'toggle'});
+                $(".layui-body").animate({left: '0px'});
+
+                $(".layui-footer").animate({left: '0px'});
+                //更换指示图标方向
+                $("#switchNav .layui-icon").text("\ue65b");
+                i++;
+            } else {
+                $(".layui-side").animate({width: 'toggle'});
+                $(".layui-body").animate({left: '200px'});
+                $(".layui-footer").animate({left: '200px'});
+                //更换指示图标方向
+                $("#switchNav .layui-icon").text("\ue65a");
+                i--;
+            }
+        });
+
+        load('personal');
+    });
+
+    function load(view) {
+        layui.use(['element'], function () {
+            var $ = layui.jquery,
+                element = layui.element;
+            $(".layui-body").load("/static/html/" + view + ".html", function () {
+            });
+        });
+        return false;
+    }
+
+</script>
+</body>
+</html>

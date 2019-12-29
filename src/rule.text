@@ -1,0 +1,4 @@
+规定url使用说明：
+1.游客浏览访问url：/visit/
+2.普通用户访问url: /user/
+3.只能管理员访问url  ：/admin/

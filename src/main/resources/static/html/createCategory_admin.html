@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<form class="layui-form" >
+    <input id="category_name" name="category_name" value="">
+    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+</form>
+<script type="text/javascript" th:src="@{../layui/lay/modules/jquery.js}"/>
+
+<script type="text/javascript">
+
+    layui.use(['layer', 'form', 'layedit'], function () {
+        // $("#category_name").val();
+        var layer = layui.layer,
+            form = layui.form,
+            $ = layui.jquery,
+            layedit = layui.layedit;
+        var flag = 0;
+        var category_name;
+        var category_id;
+        if (window.editBlogCategory != null) {
+            category_name = window.editBlogCategory.category_name;
+            category_id = window.editBlogCategory.category_id;
+            $("#category_name").val(category_name);
+            flag = 1;
+        }
+// //监听提交
+        form.on('submit(formDemo)', function () {
+// alert("8888888888888888888")
+// layer.msg(JSON.stringify(data.field));
+// alert(data.field);
+            category_name = $("#category_name").val();
+            // alert("name=" + category_name);
+
+            if (flag==0){
+                alert("name=" + category_name);
+            $.ajax({
+                url: '/user/addCategory',
+                type: "post",
+                data: {"category_name":category_name},
+                dataType:'JSON',
+                success: function (res) {
+                    if (res.code = '0') {
+// alert(res.message)
+                        layer.msg(res.msg);
+                        $("#category_name").val();
+                        load('createCategory_admin');
+                    } else{
+                       $("#category_name").val();
+                        alert(res.msg);
+                    }
+
+                },
+                error: function (data) {
+                    alert(res.msg)
+                }
+
+            })} else if (flag == 1) {
+ alert("flag=" + flag + ",category_name=" + category_name);
+                $.ajax({
+                    url: '/user/updateCategoryByCategory_id',
+                    type: "PUT",
+                    data: {"category_name":category_name,"category_id":category_id},
+// dataType:'JSON',
+                    success: function (res) {
+                        if (res.code = '0') {
+//  alert(res.message)
+                            layer.msg(res.msg);
+                            $("#category_name").val();
+                            load('createCategory_admin');
+                        } else{
+                            layer.msg(res.msg);
+                        }
+
+                    },
+                    error: function (data) {
+                        alert(res.msg)
+                    }
+
+                })
+            }
+            return false;
+        })
+    });
+</script>
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div class="card-header">
+    <h6 class="card-title">首页信息</h6>
+</div>
+
+<form class="layui-form" id="inform" enctype="multipart/form-data"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <input id="id" name="id" style="visibility: hidden">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">名言</label>
+            <div class="layui-input-inline">
+                <input id="famous" type="text" name="famous" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">备案号</label>
+            <div class="layui-input-inline">
+
+                <input id="icp" type="text" name="icp" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="inform">修改</button>
+        </div>
+    </div>
+    <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+</form>
+
+<script type="text/javascript" th:src="@{../layui/lay/modules/jquery.js}"/>
+
+<script>
+
+    layui.use(['upload', 'form'], function () {
+        var $ = layui.jquery,
+            upload = layui.upload,
+            form = layui.form;
+        form.render();
+        // //监听提交
+        form.on('submit(inform)', function (data) {
+            //    alert(data.field);
+
+            $.ajax({
+                url: '/admin/updateBlogInform',
+                type: "PUT",
+                data:data.field,
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.code = '0') {
+                        // parent.location.reload();
+                        // alert(data.blogUser)
+                        $("#icp").val(data.blogInform.icp);
+                        $('#famous').val(data.blogInform.famous);
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (data) {
+                    alert(data.msg)
+                }
+            })
+            return false;
+        });
+        //请求数据
+        $(function () {
+            // alert("进来了")
+            $.ajax({
+//提交数据的类型 POST GET
+                type: "GET",
+//提交的网址
+                url: "/admin/selectBlogInform",
+//提交的数据
+//返回数据的格式
+                datatype: " json",//“xml”, “html”, “script”, “json”, “jsonp”, “text”.
+//成功返回之后调用的函数
+                success: function (data) {
+                    $("#icp").val(data.blogInform.icp);
+                    $('#famous').val(data.blogInform.famous);
+                    form.render();
+                }
+                ,
+                error: function () {
+                    alert("加载首页信息失败！！！");
+                }
+            });
+        })
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#multipartFile' //绑定元素
+            , url: '/user/uploadFile' //上传接口
+            , datatype: " json"
+            , field: 'editormd-image-file'
+            , done: function (res) {
+                // alert("成功返回")
+                if (res.success == 1) {
+                    alert("成功修改头像");
+                } else {
+                    alert("修改失败！！");
+                }
+                //上传完毕回调
+            }
+            , error: function () {
+                alert("请求异常")
+                //请求异常回调
+            }
+        });
+
+
+        form.verify({
+            username: function (value, item) { //value：表单的值、item：表单的DOM对象
+                if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                    return '用户名不能有特殊字符';
+                }
+                if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                    return '用户名首尾不能出现下划线\'_\'';
+                }
+                if (/^\d+\d+\d$/.test(value)) {
+                    return '用户名不能全为数字';
+                }
+            }
+            , pass: [
+                /^[\S]{6,12}$/
+                , '密码必须6到12位，且不能出现空格'
+            ]
+            , content: function (value) {
+                layedit.sync(editIndex);
+            }
+        });
+        return false
+    });
+
+</script>
+</body>
+</html>

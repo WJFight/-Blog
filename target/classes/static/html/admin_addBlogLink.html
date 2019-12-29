@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<form class="layui-form" id="BlogLink">
+    <input id="id" name="id" style="visibility: hidden" value=""><br/>
+    链接名:<input id="linkName" name="linkName" value=""><br/>
+    链接地址:<input id="url" name="url" value="">
+    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+</form>
+<script type="text/javascript" th:src="@{../layui/lay/modules/jquery.js}"/>
+<script type="text/javascript">
+
+    layui.use(['layer', 'form', 'layedit'], function () {
+        var layer = layui.layer,
+            form = layui.form,
+            $ = layui.jquery,
+            layedit = layui.layedit;
+        var flag = 0;
+        var linkName;
+        var id;
+        var url;
+        alert("BlogLink=" + window.editBlogLink);
+        if (window.editBlogLink != null) {
+            linkName = window.editBlogLink.linkName;
+            id = window.editBlogLink.id;
+            url = window.editBlogLink.url;
+            alert(linkName + "," + url);
+            $("#linkName").val(linkName);
+            $("#url").val(url);
+            $("#id").val(id);
+            flag = 1;
+        }
+// //监听提交
+        form.on('submit(formDemo)', function (data) {
+            linkName = $("#linkName").val();
+            alert("name=" + linkName);
+            if (flag == 0) {
+                alert("name=" + linkName);
+                $.ajax({
+                    url: '/admin/addBlogLink',
+                    type: "post",
+                    data: data.field,
+                    dataType: 'JSON',
+                    success: function (res) {
+                        if (res.code = '0') {
+// alert(res.message)
+                            layer.msg(res.msg);
+                            $("#linkName").val();
+                            $("#url").val();
+                            load('admin_addBlogLink');
+                        } else
+                            alert(res.msg);
+                    },
+                    error: function (data) {
+                        alert(res.msg)
+                    }
+
+                })
+            } else if (flag == 1) {
+                alert("flag=" + flag + ",linkName=" + linkName);
+                $.ajax({
+                    url: '/admin/updateBlogLinkById',
+                    type: "PUT",
+                    data: data.field,
+// dataType:'JSON',
+                    success: function (res) {
+                        if (res.code = '0') {
+//  alert(res.message)
+                            window.editBlogLink = null;
+                            layer.msg(res.msg);
+                            $("#linkName").val();
+                            $("#url").val();
+                            load('admin_addBlogLink');
+                        } else
+
+                            layer.msg(res.msg);
+                    },
+                    error: function (data) {
+                        alert(res.msg)
+                    }
+
+                })
+            }
+            return false;
+        })
+    });
+</script>
+
+</html>

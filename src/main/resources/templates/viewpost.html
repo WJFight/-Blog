@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/editor.md-master/examples/css/style.css"/>
+    <link rel="stylesheet" href="../static/editor.md-master/css/editormd.preview.css"/>
+    <!--    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />-->
+    <style>
+        @font-face {
+            font-family: "layui-icon";
+            src: url('layui-icon.eot?t=1568721718316'); /* IE9 */
+            src: url('layui-icon.eot?t=1568721718316#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAvwAAsAAAAAFcQAAAugAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCFZAqZZJVyATYCJANQCyoABCAFhG0Hgjwb4BJFRoWNAwCFvgDZ/2WCjoboetqM1oZNPNJn2KhhU9VQ7fPpM/wZOCSEP27jtG0s5yXUsLVaNS38qaJhahrX1BpaEgdcM5QSnkc76v38jDN7BCqhgl2CKhqxaVTtVdmzZwi3dbcRJjhtQmZUA0P6ZeAEowgj4iOzcwABKACG6syZ1rOFktR6ghqc9Wt9mv3O3jPwQcGVSFJj8G3d5g/n7E91BlyC3cMUGqu93Z/W18U+Q2T7IkOgR2up/QuzJVj3ysVGmdnH3eMN33+AuWVFoFCYVlXuh/AuZTQ2rXJktCrEmuPl3AVBoabyP/Hc+5NSItel1KAnQ4CUuoQCBw9VUyAsTBSMWzivwgjylGMjEoVYDTl72hLZR0BstpszwF7j18sbOkoMhkBhTzVqdqYF7POyVLcWnIk6gK3ZGcBmP1CgNQAL8pHrf41atLUhpbyplgdAQ3D6PRmf+wra6qy7EVY6Kiwqrk/CfdmhoiA6/YhQ2L1TYbcSGkrpvvgLgT0AS1C9/8ALMcRkOHJKKEd5MCAVccKaCCSEJIfQr72VAD5XECz4CggB+LYICr4zQgq+O0IIfgSCAb8SIQZ/BCEDfxTBgT8uUpx8AowSyKfAKAf5DBjlIV+CSJXka2AI5JtgVIR8C85myA+AkEBZ6iOCSZW1PZoD6AWwAsEToBwyhlpCAkTqijBYBRBUkqXDa7OTknIur5AkVX1KBdfY5WGNhHFdtfINXfnyLnGNnASsUaF+lUrdqyTVo3LV/Z+8oWurleo4U5zBOwNPairlDEDg0Qg8kRIJsDXkAlae1tQYphSRsgQejZ7mAmjY+OHN2qE49GDn3jJCP5sKkbLTTpInLLO1ya1hMuoWegY+A4m7S5fi2r4ETzppO0XpCZod9VVx+UUK/U3b5rthqeIlT+uLIuV2h+E2s3a1HKJO+oKJAfc3qpGQKQ5z+RLTmlF+ZVa2pViUwUDRAVzAm6i8QC7WsHIemRmNpCRK4hdPFvCkVc5Jw4vPGsXZNsgjwst9TsD200DQMEfrDzxLgfyD1V9i/jP9r04sXYfZwwaV+9F6grd8wbHba7rIiD45o/X6gn0D7vYh3mZhD1/9lKRBStZyFoxpnng9M2dU9PGaCXezMLJzhTYBy33lGx7wjPT70fRK4Gbh89uitYM5Oyse88yZr87p7/apb+LEF55HfDwh3BQbbLm3Iyx4arVhRhGlsJT0DKM4CszGmvL0P9oQ3Jwb5Z/mVh5S/AVLQUtlaJv5mHGSgQ/nWNJxak8FarpMyofKBJJ4dt24249nD4tlrAwwi2t1rUVgdi83b3g8WwYQhqnwQ7UDwsfzAdDtx9Xci1JAw0wv+SJOfbNP1+acrRm+pSohVrpT9qrabb32EL+ywpV8YInzaFVtEy1VSU4yyjHba7c111R5g6F+DxuD1FI4xOdEwnlI0TBprSxvhi07HHTJPcDqbti+iyz4SldpvXB8l6xI34JD8KMBv7GiUamjycyKxOPlHyTW+lgquzKdW/XZMPljeugnMb9nhX/h/gx/LLJ2jr2Q87vV3tdmUY8+8zlduRjd6igc49idpdOuf6IrBhpTTfNVvUxteriOBSJhP3KiLxhykdsb7kuZunpIAr4zQ97WbNfDZvtzaOsaTOtlB32nx7zuqHEEwOWBAiynTUNxisYjLKDoFjQR4eoZGkScuHQP6e5us2lS1S3Cx1+voivkCzgRw9aApZvtkJH+M53sNk9VhrF99tL+/KHdB8Cq15nk70IoIkc2WuuHjRqpIIjkQ8kg5aIANc4eVA9b4fRBiBExTR/Yirj9bDNEuGnQtEJjAcuRJzZvdYHJ00S0dlGdSN2aiQP1Y8DltVz9gw5k/lSkgVfActtmsRhCUzcLz4ScDtkdsucLuceAl3sGCHy4fmIuwRErnRBFlOgxXAVIDJN8M2vguPFIjUHqNRBp/BLGywmyt7BwPsPZ2SCc0909O8OQr/XWeO+dbUNtmOmczQfgqxUD48rL4wYBmSNGY7lcjBEWnWfFeMawzrN9PH3aytndco4VwycueKFGrVy0Mvqx/sX/+RFAlPAg5VAVLxBVXCy92dsXlNypPIuLahN07H9ZqNs7tyHKJDQLFHjaAw+zY3PAzbjtXZf19aYD/zkfOYDDvmi2CXKO/HtucZx2g3Yz6c01djCAHxDT6uxoUPu7iOaEKcKgpreyAOpgN8UWL7DRwEojlLuXTUhUf9tgDTSwIg+KIZEvqAFqUJ2HELT5oCtaI6gbiOm5h8whIc7mqT3l0ADoDxTCbTnExfR1AzWCCZlNclg1dmwVrIZjxiJVQCZpstsJtXV12iBwYPh1dbXOC9YC9uUBTHAHlsI7gOlwx7vU+45Pp/VqqxVWq61pu4a5gskMTQajwraCMUubQju8bACIBjE0FQTsPDn35Oh5o7HT7Hkj4rN1awQV+G6drqHermkX7Dq/z9WnBB2C3YsXC/NcL2gVlPQiQ6NWa5gXpZRSd94lPwPI+o8bJ5ONG0dTrzXeoOM4/Qa9u7Dqde4D4KhwGk/SnsyR8KT8OQ7neNXVPAlfOocv4xHV1ZwEgi/bRcqTWHYCwMJ4GAtnKdZ5GIg/lH2EQt9FHoh8h5LIe1/e+I3jynm+LvX6ceOpkO3c0HfHdUe6y0gdZfffHSfhCcXhbF/yMrNDZ9aWUg8JJ14AWKfdWnBr7YK13T3DaoZV1laSWodIsBtEgQr0jiSxsJhQbDV2aSQ1XcJIrQgW7Ozu7qO75hntRv9KTrlK9T+lqe+2RbZFh+tD4XBD9nEmp5rDPF4v0u7y0XVbwXzOJc687YzfzD8gBiqPoQNWrR6AALkFOuAYIpHgaVd926flMQG28r2aFklIIrlCNMeERWPBM1409PU5hpSPGFEuBAEwc8xnrAH8J0o4RpVy858x/2707jIl9EaFvoh82WqwaJMD4zNJbrjeZcvxCVisNNhDKJRKaTT1LLlgUA1ILLdHLEOHWoIgExhqn1gO+gbMeUg67qLB9ujIkzumoQZZjo706XDg9+BNb6HKbFEFgYqhKh2zIGFjjltEVrJclOK3as6gzvao5l82022cJ24f2Xb7rZ8oNVn2t4Ubx5H0Uw/JEnPRIY6bIGhtnzVE7edIhl3J0xZryVuUtwS8aGlsetqEhhFdqnqBA88/Y3pstDRz+RZcjIvS+iDfUrpyLevVcSWBJfElSp2yML4wsDBOWbGemn4lyPhEyQRPZurOxSB9oJ40IlHqeU0Dnxgzu2K7dsHSqtK2zLZYfkmOoX/AltKPUDxirD8soN43L6E4p0d0utGzNXDXrTzfevPDG2tB0jC1jlLqgcU2Pa2Tskh8ZP74HuoEFCteeKz1tZVRwlF/qfO8gUfOaUZS1x/kWuwZ9fN1Sanfsn40b3t+5esMb7WaYwysVuDvcEHgBiiKoPrWQxWV7dGrOISWDZ42cmZeVxnjF7pgaCpdAH+FDRW5VwWlirDrv1ip4uQaIupQ5YU2phahrXMDMjrTEKH9clNaIds/oxLNQGwCtGQocoXyrM81lPCQKkLPUovQu7kBVXlLQmJFc1MmiJPJjH3+YhZEQEgoWDszw8lLr0oLc/wXqmwhkGe10R+GaMizuqiu/Tf0GLLYJg6qSUkyGcix62ILtJZYH6hDngpNX38pS7nbtuDkHhZEQEhaYcFoZ3vDyctbp0Xg53+hyhZCxLIn+z8M0Tw8o6agEhBukhdatipT46AaEhmSKXMDOcaVDLRSDzF6/mod8lSgE3T1F0o6nxSViuIVNwckQEbfCdnuleVJVKwEEkoksSRfdZ/TSS4lUk7Ky14OcpSTnDF1ZzeimYwX6JXNr3edOS60UQIU5R1Pn4kMnZ05Z31rRR0aVlbCgNcZNJCDxQz+rpfP6+CVZxrzussBYjT8fwSTVp6Oto3blSFzl3zRbbdpcrjMN17S/hHUo8cZ4zU/Rwy7phRAlHPRdQWeQ0DP5wcAAAA=') format('woff2'),
+            url('layui-icon.woff?t=1568721718316') format('woff'),
+            url('layui-icon.ttf?t=1568721718316') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */ url('layui-icon.svg?t=1568721718316#layui-icon') format('svg'); /* iOS 4.1- */
+        }
+
+        .layui-icon {
+            font-family: "layui-icon" !important;
+            font-size: 16px;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .icon-14:before {
+            content: "\e6a8";
+        }
+
+        .icon-weixindenglu:before {
+            content: "\e64e";
+        }
+
+        .icon-zhuce:before {
+            content: "\e62e";
+        }
+
+        .icon-zhucedagou:before {
+            content: "\e60d";
+        }
+
+        .icon-dengluyonghuming:before {
+            content: "\e611";
+        }
+
+        .icon-weixindenglu1:before {
+            content: "\e638";
+        }
+
+        .icon-denglu:before {
+            content: "\e70a";
+        }
+
+        .icon-dianhuahaoma:before {
+            content: "\e674";
+        }
+
+        .icon-yanzhengma:before {
+            content: "\e6be";
+        }
+
+        .icon-cuowu:before {
+            content: "\e634";
+        }
+
+        .icon-jurassic_wait:before {
+            content: "\e696";
+        }
+
+        .icon-jurassic_bbs:before {
+            content: "\e697";
+        }
+
+        .icon-jurassic_fujian:before {
+            content: "\e699";
+        }
+
+        .icon-jurassic_home:before {
+            content: "\e69a";
+        }
+
+        .icon-jurassic_info:before {
+            content: "\e69c";
+        }
+
+        .icon-jurassic_openeyes:before {
+            content: "\e69e";
+        }
+
+        .icon-jurassic_user:before {
+            content: "\e6a4";
+        }
+
+        .icon-jurassic_trading:before {
+            content: "\e6b7";
+        }
+
+        .icon-jurassic_currency:before {
+            content: "\e6b8";
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="inner" style="text-align: center">
+    <h2><span th:text="${blogPost.post_title}"></span></h2>
+    <p id="article-time" align="right">
+        <th:formatDate th:text="${blogPost.post_createDate}" type="date"/>
+    </p>
+    <div class="content editormd-preview-theme" id="content">
+        <textarea id="append-test" style="display:none;" th:text="${blogPost.post_content}"></textarea>
+    </div>
+</div>
+<div class="submit_commit">
+    <label>称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;呼<span style="color:red">*</span></label><input id="name"/>
+    <label>联系方式<span style="color:red">*</span></label><input id="contact"/>
+    <label>评论内容<span style="color:red">*</span></label>
+    <textarea id="comment-content"></textarea>
+    <button id="submit">提交</button>
+</div>
+
+</body>
+<script src="../static/editor.md-master/examples/js/jquery.min.js"></script>
+<script src="../static/editor.md-master/lib/marked.min.js"></script>
+<script src="../static/editor.md-master/lib/prettify.min.js"></script>
+
+<script src="../static/editor.md-master/lib/raphael.min.js"></script>
+<script src="../static/editor.md-master/lib/underscore.min.js"></script>
+<script src="../static/editor.md-master/lib/sequence-diagram.min.js"></script>
+<script src="../static/editor.md-master/lib/flowchart.min.js"></script>
+<script src="../static/editor.md-master/lib/jquery.flowchart.min.js"></script>
+<script src="../static/editor.md-master/editormd.js"></script>
+<script type="text/javascript">
+    editormd.markdownToHTML("content");
+</script>
+</html>

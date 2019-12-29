@@ -1,0 +1,12 @@
+<!--<ehcache>-->
+<!--<diskStore path="java.io.tmpdir/cache"/>-->
+<!--<defaultCache-->
+<!--        maxElementsInMemory="1000"-->
+<!--        eternal="false"-->
+<!--        timToIdeleSeconds="120"-->
+<!--        timeToLiveSeconds="120"-->
+<!--        overflowToDisk="false"-->
+<!--        diskPersistent="false"-->
+<!--        diskExpiryThreadIntervalSeconds="120"-->
+<!--/>-->
+<!--</ehcache>-->

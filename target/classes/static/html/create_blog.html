@@ -1,0 +1,100 @@
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <form class="layui-form layui-form-pane" id="typeForm" role="form">
+        <div class="form-group layui-form-item">
+            <input class="form-control col-sm-12 post_title" id="post_title" name="post_title"
+                   placeholder="*请输入文章标题(必填)"
+                   required="true"
+                   style="width: 75%;"
+                   th:value="${blogPost!=null and blog.post_title!=null }?${blogPost.post_title}: ''" type="text">
+
+        </div>
+        <div class="form-group">
+
+            <!-- 文章内容-->
+            <div id="test-editormd">
+                <textarea id="textContent" name="post_content" style="display:none;"
+                          th:utext="${blogPost!=null and blogPost.post_content !=null}?${blogPost.post_content}: ''"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group align ml-3">
+            <div class="row">
+                <div class="col-md-12 align">
+                    文章标签：
+                    <!--文章标签tag-->
+                    <input class="align " id="blogTags" name="blogTags" placeholder="请输入文章标签"
+                           style="width: 60%;"
+                           th:value="${blogPost!=null and blogPost.blogTags!=null }?${blogPost.blogTags}: ''"
+                           type="text">(标签以'/'分割)
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="form-group align my-2">
+            <div class="row ml-3">
+
+
+                <div class="col-md-9 ">
+                    个人分类：
+                    <!--                        博客个人分类-->
+                    <select class="" data-placeholder="请选择分类..." id="category_id"
+                            name="category_id" style="width:15%;">
+                        <th:block th:if="${null == blogCategoryList}">
+                            <option selected="selected" value="0">默认分类</option>
+                        </th:block>
+                        <th:block th:unless="${null == blogCategoryList}">
+                            <th:block th:each="c : ${blogCategoryList}">
+                                <option th:selected="${null !=blogPost and null !=blogPost.blogCategoryId and blog.blogCategoryId==c.categoryId} ?true:false"
+                                        th:text="${c.category_name}"
+                                        th:value="${c.category_id}">
+                                </option>
+                            </th:block>
+                        </th:block>
+                    </select>
+
+                    <!--博文类型-->
+                    博客类型：
+                    <select class="mr-5" name="type_id" style="width:15%; color: black">
+                        <option th:value="0">Java基础</option>
+                        <option th:value="1">JavaWeb</option>
+                        <option th:value="2">Mybatis</option>
+                        <option th:value="3">JVM</option>
+                        <option th:value="4">SpringMVC</option>
+                        <option th:value="5">SpringBoot</option>
+                        <option th:value="6">SpringCloud</option>
+                        <option th:value="7">SpringSecurity</option>
+                        <option th:value="8">MySQL</option>
+                        <option th:value="9">Oracle</option>
+                        <option th:value="10">Redis</option>
+                        <option th:value="11">多线程并发</option>
+                        <option th:value="12">网站构建</option>
+                        <option th:value="13">前端系列</option>
+                        <option th:value="14">分布式学习</option>
+                        <option th:value="15">缓存或加密</option>
+                        <option th:value="16">缓存或加密</option>
+                        <option th:value="17">其他</option>
+                    </select>
+                    发布形式：
+                    <label><input checked="checked" name="post_switch" type="radio" value="0"/>公开</label>
+                    <label><input name="post_switch" type="radio" value="1"/>私密</label>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row align">
+        <div class="col-md-4">
+            <button class="btn btn-primary align" type="button">
+                发布
+            </button>
+            <button class="btn btn-primary align" type="button">
+                返回
+            </button>
+        </div>
+    </div>
+</div>
+</html>
